@@ -1,0 +1,8 @@
+ext {
+    StorePassword="store"
+    KeyPassword="key"
+    KeyAlias="mvvm"
+    KeystoreFile="./"
+    PlatformAlias="platform"
+    PlatformPassword="platform"
+}

@@ -11,6 +11,4 @@ class MainActivity : BaseActivity() {
         super.init()
         // TODO anything you need
     }
-
-
 }

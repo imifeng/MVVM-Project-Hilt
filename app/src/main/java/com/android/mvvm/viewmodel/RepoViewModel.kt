@@ -4,27 +4,22 @@ import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.android.mvvm.data.RepoBean
-import com.android.mvvm.data.dao.RepoBeanDao
-import com.android.mvvm.web.RepoApi
+import com.android.mvvm.repository.RepoRepository
 
 class RepoViewModel(
-    private val repoDao: RepoBeanDao,
-    private val repoApi: RepoApi,
+        private val repoRepository: RepoRepository,
 ) : ViewModel() {
 
     companion object {
-        private val TAG = this::class.java.simpleName
+        private const val TAG = "RepoViewModel"
     }
 
     @WorkerThread
-    suspend fun loadRepos(username: String): List<RepoBean> {
-        val results = repoApi.getRepos(username)
-        repoDao.insertAll(results)
-        return results
+    suspend fun loadRepos(username: String): List<RepoBean>? {
+        return repoRepository.loadRepos(username)
     }
 
-
     fun getRepos(): LiveData<List<RepoBean>> {
-        return repoDao.getAllRepos()
+        return repoRepository.getRepos()
     }
 }

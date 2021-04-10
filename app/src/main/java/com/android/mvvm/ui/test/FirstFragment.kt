@@ -2,13 +2,13 @@ package com.android.mvvm.ui.test
 
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import com.android.mvvm.R
 import com.android.mvvm.core.base.BaseFragment
 import com.android.mvvm.core.extension.hide
 import com.android.mvvm.core.extension.show
-import com.android.mvvm.core.extension.viewModel
+import com.android.mvvm.core.extension.viewModelFragment
 import com.android.mvvm.core.model.FragmentProperties
+import com.android.mvvm.ui.MainActivity
 import com.android.mvvm.viewmodel.RepoViewModel
 import kotlinx.android.synthetic.main.fragment_first.*
 import kotlinx.coroutines.Dispatchers
@@ -23,7 +23,7 @@ class FirstFragment : BaseFragment() {
         resource = R.layout.fragment_first
     )
 
-    private val repoViewModel: RepoViewModel by viewModel()
+    private val repoViewModel: RepoViewModel by viewModelFragment()
 
     override fun init() {
         super.init()
@@ -37,16 +37,14 @@ class FirstFragment : BaseFragment() {
     }
 
     private fun signIn() {
-        lifecycleScope.launch {
+        lifecycleScope.launch(Dispatchers.Main) {
             pb_loading.show()
             val results = withContext(Dispatchers.IO) {
                 repoViewModel.loadRepos(et_username.text.toString())
             }
-            withContext(Dispatchers.Main) {
-                pb_loading.hide()
-                if (results != null && results.isNotEmpty()) {
-                    findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
-                }
+            pb_loading.hide()
+            if (results != null && results.isNotEmpty()) {
+                (activity as? MainActivity)?.gotoSecondFragment()
             }
         }
     }

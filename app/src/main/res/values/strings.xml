@@ -13,5 +13,6 @@
     <string name="get_repos">获取 Repos</string>
     <string name="repos_text_hint_username">请输入 github 用户名</string>
     <string name="sign_in">登录</string>
+    <string name="repos_title">记录</string>
 
 </resources>

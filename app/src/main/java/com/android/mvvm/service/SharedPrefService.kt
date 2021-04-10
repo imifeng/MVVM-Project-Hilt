@@ -54,7 +54,7 @@ class SharedPrefService(app: Application) {
         }
 
     /**
-     * 检索用户名字
+     * 检索用户Token
      */
     var userToken: String
         get() = sp.getString(USER_TOKEN, "") ?: ""

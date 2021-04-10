@@ -1,2 +1,2 @@
 include ':app'
-rootProject.name = "MVVM-Project"
+rootProject.name = "MVVM-Project-Kodein"

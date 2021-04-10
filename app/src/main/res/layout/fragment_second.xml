@@ -6,19 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".ui.test.SecondFragment">
 
+    <include layout="@layout/layout_header" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_data"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
-    <Button
-        android:id="@+id/button_second"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/previous"
-        android:layout_marginBottom="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="0dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/header" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

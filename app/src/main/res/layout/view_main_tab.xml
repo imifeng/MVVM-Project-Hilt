@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:paddingTop="4dp"
+    android:background="@color/colorMain">
+
+    <RelativeLayout
+        android:id="@+id/layout_first"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/layout_second"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_first"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:drawablePadding="3dp"
+            android:gravity="center"
+            android:text="First"
+            android:textColor="@drawable/tab_text_selector"
+            android:textSize="10sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_second"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/layout_third"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toEndOf="@+id/layout_first"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_second"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_weight="1"
+            android:drawablePadding="3dp"
+            android:gravity="center"
+            android:text="Second"
+            android:textColor="@drawable/tab_text_selector"
+            android:textSize="10sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_third"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/layout_fourth"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toEndOf="@+id/layout_second"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_third"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:drawablePadding="3dp"
+            android:gravity="center"
+            android:text="Third"
+            android:textColor="@drawable/tab_text_selector"
+            android:textSize="10sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_fourth"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/layout_fifth"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toEndOf="@+id/layout_third"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_fourth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:drawablePadding="3dp"
+            android:gravity="center"
+            android:text="Fourth"
+            android:textColor="@drawable/tab_text_selector"
+            android:textSize="10sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_fifth"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toEndOf="@+id/layout_fourth"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_fifth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:drawablePadding="3dp"
+            android:gravity="center"
+            android:text="Fifth"
+            android:textColor="@drawable/tab_text_selector"
+            android:textSize="10sp" />
+    </RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

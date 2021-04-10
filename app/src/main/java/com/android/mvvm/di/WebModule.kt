@@ -4,10 +4,11 @@ import com.android.mvvm.App
 import com.android.mvvm.BuildConfig
 import com.android.mvvm.data.typeconverters.DateAdapters
 import com.android.mvvm.data.typeconverters.BooleanAdapters
-import com.android.mvvm.web.RepoApi
+import com.android.mvvm.web.api.RepoApi
 import com.android.mvvm.web.interceptor.HeadInterceptor
 import com.android.mvvm.web.interceptor.WebLogger
-import com.bumptech.glide.Glide
+import com.android.mvvm.repository.RepoRepositoryImpl
+import com.android.mvvm.service.NetworkMonitor
 import com.squareup.moshi.Moshi
 import okhttp3.OkHttpClient
 import org.kodein.di.Kodein
@@ -21,9 +22,9 @@ val webModule = Kodein.Module(name = "webModule") {
 
     bind<Moshi>() with singleton {
         Moshi.Builder()
-            .add(BooleanAdapters())
-            .add(DateAdapters())
-            .build()
+                .add(BooleanAdapters())
+                .add(DateAdapters())
+                .build()
     }
 
     bind<MoshiConverterFactory>() with singleton {
@@ -32,24 +33,33 @@ val webModule = Kodein.Module(name = "webModule") {
 
     bind<OkHttpClient>() with singleton {
         OkHttpClient.Builder()
-            .connectTimeout(60, java.util.concurrent.TimeUnit.SECONDS)
-            .readTimeout(60, java.util.concurrent.TimeUnit.SECONDS)
-            .writeTimeout(60, java.util.concurrent.TimeUnit.SECONDS)
-            .addInterceptor(HeadInterceptor(instance()))
-            .addInterceptor(WebLogger(instance<App>()))
-            .retryOnConnectionFailure(true)
-            .build()
+                .connectTimeout(60, java.util.concurrent.TimeUnit.SECONDS)
+                .readTimeout(60, java.util.concurrent.TimeUnit.SECONDS)
+                .writeTimeout(60, java.util.concurrent.TimeUnit.SECONDS)
+                .addInterceptor(HeadInterceptor(instance()))
+                .addInterceptor(WebLogger(instance<App>()))
+                .retryOnConnectionFailure(true)
+                .build()
     }
 
     bind<Retrofit>(tag = "RepoApi") with singleton {
         Retrofit.Builder()
-            .baseUrl(BuildConfig.API_URL)
-            .addConverterFactory(instance())
-            .client(instance())
-            .build()
+                .baseUrl(BuildConfig.API_URL)
+                .addConverterFactory(instance())
+                .client(instance())
+                .build()
     }
 
     bind<RepoApi>() with singleton {
         instance<Retrofit>(tag = "RepoApi").create(RepoApi::class.java)
     }
+
+    bind<RepoRepositoryImpl>() with singleton {
+        RepoRepositoryImpl(instance(), instance())
+    }
+
+    bind<NetworkMonitor>() with singleton {
+        NetworkMonitor(instance())
+    }
+
 }

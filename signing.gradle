@@ -1,8 +1,6 @@
 ext {
-    StorePassword="store"
-    KeyPassword="key"
-    KeyAlias="mvvm"
-    KeystoreFile="./"
-    PlatformAlias="platform"
-    PlatformPassword="platform"
+    StoreFile = "netspeed.keystore"
+    StorePassword = "202121"
+    KeyAlias = "speed"
+    KeyPassword = "202121"
 }

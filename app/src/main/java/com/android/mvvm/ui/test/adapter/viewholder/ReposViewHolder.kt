@@ -1,6 +1,7 @@
 package com.android.mvvm.ui.test.adapter.viewholder
 
 import android.view.View
+import com.android.mvvm.core.base.BaseViewHolder
 import com.android.mvvm.data.RepoBean
 import com.android.mvvm.util.Logger
 import com.android.mvvm.util.loadRound
@@ -12,16 +13,21 @@ class ReposViewHolder(itemView: View) : BaseViewHolder(itemView) {
         private const val TAG = "ReposViewHolder"
     }
 
-    override fun bindData(position: Int, item: Any?) {
+    override fun bindData(
+        position: Int,
+        item: Any?,
+        onItemClick: ((position: Int, action: Any) -> Unit)?
+    ) {
         with(itemView) {
             if (item != null && item is RepoBean) {
                 iv_avatar.loadRound(item.owner?.avatar_url)
                 tv_name.text = item.name
-                tv_description.text = item?.description?:""
+                tv_description.text = item?.description ?: ""
 
                 // 为ViewHolder的视图定义点击监听器
                 setOnClickListener {
                     Logger.d(TAG, "Element $adapterPosition clicked.")
+                    onItemClick?.invoke(position, item)
                 }
             }
         }

@@ -1,4 +1,4 @@
-package com.kotlin.project.extension
+package com.android.mvvm.core.extension
 
 import android.content.res.Resources
 import android.util.TypedValue

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="ErrorText">
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">@font/pingfang_medium</item>
+        <item name="android:textColor">@color/colorRed</item>
+    </style>
+
+
+    <style name="TextButtonWhite" parent="WhiteBold16">
+        <item name="android:gravity">center</item>
+        <item name="android:shadowColor">#4A000000</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">1</item>
+    </style>
+</resources>

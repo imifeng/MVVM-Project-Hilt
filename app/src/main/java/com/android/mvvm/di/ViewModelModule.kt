@@ -13,6 +13,6 @@ val viewModelModule = Kodein.Module(name = "viewModelModule") {
     }
 
     bind<RepoViewModel>() with singleton {
-        RepoViewModel(instance(),instance())
+        RepoViewModel(instance())
     }
 }

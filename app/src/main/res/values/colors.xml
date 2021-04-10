@@ -6,6 +6,9 @@
 
     <color name="translucent">#80000000</color>
     <color name="transparent">#00000000</color>
+    <color name="colorBackground">#FBFBFB</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorRed">#F5222D</color>
 
     <color name="colorMain">#6200EE</color>
 

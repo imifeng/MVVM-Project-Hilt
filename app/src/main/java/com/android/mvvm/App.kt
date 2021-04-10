@@ -20,7 +20,7 @@ class App: Application(), KodeinAware {
     override val kodein by Kodein.lazy {
         bind<App>() with singleton { this@App }
         bind<SharedPrefService>() with singleton {
-            SharedPrefService(instance())
+            SharedPrefService(this@App)
         }
         import(dataModule)
         import(webModule)

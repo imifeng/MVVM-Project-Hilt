@@ -11,23 +11,17 @@ import com.android.mvvm.core.extension.show
 import com.android.mvvm.core.model.FragmentProperties
 import com.android.mvvm.service.SharedPrefService
 import com.android.mvvm.util.Logger
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.layout_header.*
-import org.kodein.di.Kodein
-import org.kodein.di.KodeinAware
-import org.kodein.di.android.x.kodein
-import org.kodein.di.generic.instance
+import javax.inject.Inject
 
-
-abstract class BaseFragment : Fragment(), KodeinAware {
+@AndroidEntryPoint
+abstract class BaseFragment : Fragment() {
 
     abstract val fragmentProperties: FragmentProperties
 
-    /**
-     * @suppress
-     */
-    override val kodein: Kodein by kodein()
-
-    protected val sp: SharedPrefService by instance()
+    @Inject lateinit var sp: SharedPrefService
+//    protected val sp: SharedPrefService by instance()
 
     /**
      * The logging tag to be used when debugging. Will use the inheritors simple name.

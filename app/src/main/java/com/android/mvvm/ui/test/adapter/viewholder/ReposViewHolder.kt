@@ -22,7 +22,7 @@ class ReposViewHolder(itemView: View) : BaseViewHolder(itemView) {
             if (item != null && item is RepoBean) {
                 iv_avatar.loadRound(item.owner?.avatar_url)
                 tv_name.text = item.name
-                tv_description.text = item?.description ?: ""
+                tv_description.text = item.description ?: ""
 
                 // 为ViewHolder的视图定义点击监听器
                 setOnClickListener {

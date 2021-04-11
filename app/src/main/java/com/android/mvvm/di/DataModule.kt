@@ -1,18 +1,30 @@
 package com.android.mvvm.di
 
+import android.content.Context
 import com.android.mvvm.data.AppDatabase
 import com.android.mvvm.data.dao.RepoBeanDao
-import org.kodein.di.Kodein
-import org.kodein.di.generic.bind
-import org.kodein.di.generic.instance
-import org.kodein.di.generic.singleton
+import com.android.mvvm.repository.RepoRepository
+import com.android.mvvm.repository.RepoRepositoryImpl
+import dagger.Binds
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
-val dataModule = Kodein.Module(name = "dataModule") {
-    bind<AppDatabase>() with singleton {
-        AppDatabase.initialize(instance(), instance())
+@Module
+@InstallIn(SingletonComponent::class)
+object DataModule {
+
+    @Provides
+    @Singleton
+    fun provideDatabase(@ApplicationContext appContext: Context): AppDatabase {
+        return AppDatabase.initialize(appContext)
     }
 
-    bind<RepoBeanDao>() with singleton {
-        instance<AppDatabase>().noteDao()
+    @Provides
+    fun provideRepoDao(database: AppDatabase): RepoBeanDao {
+        return database.repoDao()
     }
 }

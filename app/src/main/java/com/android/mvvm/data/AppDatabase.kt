@@ -8,9 +8,9 @@ import androidx.room.TypeConverters
 import com.android.mvvm.BuildConfig
 import com.android.mvvm.data.dao.RepoBeanDao
 import com.android.mvvm.data.typeconverters.DateAdapters
-import com.android.mvvm.service.SharedPrefService
+import dagger.hilt.android.qualifiers.ApplicationContext
 
-@Database(entities = [RepoBean::class], version = 1)
+@Database(entities = [RepoBean::class], version = 1, exportSchema = false)
 @TypeConverters(DateAdapters::class)
 abstract class AppDatabase : RoomDatabase() {
 
@@ -18,7 +18,7 @@ abstract class AppDatabase : RoomDatabase() {
         private const val TAG = "AppDatabase"
         private const val DATABASE_NAME = "mvvm_database"
 
-        fun initialize(context: Context, sp: SharedPrefService): AppDatabase {
+        fun initialize(@ApplicationContext context: Context): AppDatabase {
             return Room.databaseBuilder(context, AppDatabase::class.java, DATABASE_NAME)
                 .apply {
                     fallbackToDestructiveMigration()
@@ -41,6 +41,6 @@ abstract class AppDatabase : RoomDatabase() {
 //        }
     }
 
-    abstract fun noteDao(): RepoBeanDao
+    abstract fun repoDao(): RepoBeanDao
 
 }

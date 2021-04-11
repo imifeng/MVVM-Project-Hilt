@@ -11,22 +11,20 @@ import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import androidx.lifecycle.MutableLiveData
-import com.android.mvvm.App
 import com.android.mvvm.util.Logger
 import com.android.mvvm.core.constant.NetworkStatus
 import com.android.mvvm.core.extension.getMainThread
+import com.android.mvvm.di.WebModule
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import org.kodein.di.Kodein
-import org.kodein.di.KodeinAware
-import org.kodein.di.android.kodein
-import org.kodein.di.generic.instance
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class NetworkMonitor(
-        private val context: App,
-) : KodeinAware {
+@Singleton
+class NetworkMonitor @Inject constructor(@ApplicationContext private val context: Context) {
     companion object {
         private const val TAG = "NetworkMonitor"
     }
@@ -41,8 +39,10 @@ class NetworkMonitor(
      */
     private val HOLDTIME = 1000 * 5
 
-    override val kodein: Kodein by kodein(context)
-    private val quickHttpClient: OkHttpClient by instance(arg = 8L)
+
+    @WebModule.QuickOkHttpClient
+    @Inject
+    lateinit var quickHttpClient: OkHttpClient
     val networkStatus = MutableLiveData<NetworkStatus>(NetworkStatus.Disconnected)
     val isWifi = MutableLiveData(false)
     val wifiInfo = MutableLiveData<WifiInfo>(null)
@@ -77,23 +77,23 @@ class NetworkMonitor(
                     val capabilities = cm.getNetworkCapabilities(network)
                     if (capabilities != null) {
                         updateWifiCapabilities(
-                                capabilities.hasTransport(
-                                        NetworkCapabilities.TRANSPORT_WIFI
-                                )
+                            capabilities.hasTransport(
+                                NetworkCapabilities.TRANSPORT_WIFI
+                            )
                         )
                     }
                     startRepeatingTask()
                 }
 
                 override fun onCapabilitiesChanged(
-                        network: Network,
-                        networkCapabilities: NetworkCapabilities
+                    network: Network,
+                    networkCapabilities: NetworkCapabilities
                 ) {
                     super.onCapabilitiesChanged(network, networkCapabilities)
                     updateWifiCapabilities(
-                            networkCapabilities.hasTransport(
-                                    NetworkCapabilities.TRANSPORT_WIFI
-                            )
+                        networkCapabilities.hasTransport(
+                            NetworkCapabilities.TRANSPORT_WIFI
+                        )
                     )
                 }
 
@@ -116,56 +116,56 @@ class NetworkMonitor(
             })
         } else {
             cm.registerNetworkCallback(
-                    NetworkRequest.Builder().build(),
-                    object : ConnectivityManager.NetworkCallback() {
-                        // 在框架连接并声明可以使用新网络时调用
-                        override fun onAvailable(network: Network) {
-                            super.onAvailable(network)
-                            // 网络已连接
-                            isNetworkUp = true
-                            updateNetworkStatus(NetworkStatus.Connected)
-                            val capabilities = cm.getNetworkCapabilities(network)
-                            if (capabilities != null) {
-                                updateWifiCapabilities(
-                                        capabilities.hasTransport(
-                                                NetworkCapabilities.TRANSPORT_WIFI
-                                        )
-                                )
-                            }
-                            startRepeatingTask()
-                        }
-
-                        override fun onCapabilitiesChanged(
-                                network: Network,
-                                networkCapabilities: NetworkCapabilities
-                        ) {
-                            super.onCapabilitiesChanged(network, networkCapabilities)
+                NetworkRequest.Builder().build(),
+                object : ConnectivityManager.NetworkCallback() {
+                    // 在框架连接并声明可以使用新网络时调用
+                    override fun onAvailable(network: Network) {
+                        super.onAvailable(network)
+                        // 网络已连接
+                        isNetworkUp = true
+                        updateNetworkStatus(NetworkStatus.Connected)
+                        val capabilities = cm.getNetworkCapabilities(network)
+                        if (capabilities != null) {
                             updateWifiCapabilities(
-                                    networkCapabilities.hasTransport(
-                                            NetworkCapabilities.TRANSPORT_WIFI
-                                    )
+                                capabilities.hasTransport(
+                                    NetworkCapabilities.TRANSPORT_WIFI
+                                )
                             )
                         }
-
-                        override fun onLosing(network: Network, maxMsToLive: Int) {
-                            super.onLosing(network, maxMsToLive)
-                            updateNetworkLost()
-                        }
-
-                        // 当网络断开连接或不再满足此请求或回调时调用
-                        override fun onLost(network: Network) {
-                            super.onLost(network)
-                            // 网络已断开
-                            updateNetworkLost()
-                            isNetworkUp = false
-                        }
-
-                        override fun onUnavailable() {
-                            super.onUnavailable()
-                            updateNetworkLost()
-                            isNetworkUp = false
-                        }
+                        startRepeatingTask()
                     }
+
+                    override fun onCapabilitiesChanged(
+                        network: Network,
+                        networkCapabilities: NetworkCapabilities
+                    ) {
+                        super.onCapabilitiesChanged(network, networkCapabilities)
+                        updateWifiCapabilities(
+                            networkCapabilities.hasTransport(
+                                NetworkCapabilities.TRANSPORT_WIFI
+                            )
+                        )
+                    }
+
+                    override fun onLosing(network: Network, maxMsToLive: Int) {
+                        super.onLosing(network, maxMsToLive)
+                        updateNetworkLost()
+                    }
+
+                    // 当网络断开连接或不再满足此请求或回调时调用
+                    override fun onLost(network: Network) {
+                        super.onLost(network)
+                        // 网络已断开
+                        updateNetworkLost()
+                        isNetworkUp = false
+                    }
+
+                    override fun onUnavailable() {
+                        super.onUnavailable()
+                        updateNetworkLost()
+                        isNetworkUp = false
+                    }
+                }
             )
         }
     }
@@ -265,9 +265,9 @@ class NetworkMonitor(
         }
         return try {
             val response = quickHttpClient.newCall(
-                    Request.Builder()
-                            .url(url)
-                            .build()
+                Request.Builder()
+                    .url(url)
+                    .build()
             ).execute()
             Logger.i(TAG, "Ping response code for $url was ${response.code()}")
             response.code()

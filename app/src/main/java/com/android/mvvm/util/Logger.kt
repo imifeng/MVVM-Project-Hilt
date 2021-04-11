@@ -37,7 +37,7 @@ object Logger {
         }
     }
 
-    fun e(tag: String, msg: String, tr: Throwable? = null) {
+    fun e(tag: String, msg: String) {
         if (DEBUG) {
             Log.e(tag, msg)
         }

@@ -1,18 +1,18 @@
 package com.android.mvvm.di
 
-import com.android.mvvm.viewmodel.KodeinViewModelFactory
+import com.android.mvvm.repository.RepoRepository
 import com.android.mvvm.viewmodel.RepoViewModel
-import org.kodein.di.Kodein
-import org.kodein.di.generic.bind
-import org.kodein.di.generic.instance
-import org.kodein.di.generic.singleton
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ViewModelComponent
+import dagger.hilt.android.scopes.ViewModelScoped
 
-val viewModelModule = Kodein.Module(name = "viewModelModule") {
-    bind<KodeinViewModelFactory>() with singleton {
-        KodeinViewModelFactory(kodein)
-    }
+@Module
+@InstallIn(ViewModelComponent::class)
+internal object ViewModelModule {
 
-    bind<RepoViewModel>() with singleton {
-        RepoViewModel(instance())
-    }
+    @Provides
+    @ViewModelScoped
+    fun provideRepoViewModel(repoRepository: RepoRepository) = RepoViewModel(repoRepository)
 }

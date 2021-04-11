@@ -3,6 +3,7 @@ package com.android.mvvm.ui
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
 import com.android.mvvm.R
 import com.android.mvvm.core.base.BaseActivity
@@ -32,13 +33,13 @@ class MainActivity : BaseActivity() {
     override fun init() {
         super.init()
         Logger.d(TAG, "init")
-        networkMonitor.networkStatus.observe(this) {
+        networkMonitor.networkStatus.observe(this, Observer{
             if (it == NetworkStatus.Connected && currentNetStatus != it) {
                 Logger.d(TAG, "networkStatus: $it")
                 // 网络已连接
             }
             currentNetStatus = it
-        }
+        })
 
         switchTabByPosition(TabItem.TAB_TYPE_FIRST)
 

@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'dagger.hilt.android.plugin'
 
 android {
     compileSdkVersion 29
@@ -59,17 +60,6 @@ android {
 }
 
 dependencies {
-    def lifecycle_version = "2.2.0"
-    def room_version = "2.2.6"
-    def kodein_version = '6.5.1'
-    def work_version = "2.4.0"
-    def retrofit_version = "2.9.0"
-    def moshi_version = "1.11.0"
-    def fragment_version = "1.2.5"
-    def statusbarutil_version ='1.5.1'
-    def glide_version ='4.11.0'
-    def transformations_version ='4.0.0'
-
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.3.2'
@@ -79,6 +69,15 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+    // hilt
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
+    implementation "androidx.hilt:hilt-lifecycle-viewmodel:$hilt_androidx_version"
+    kapt "androidx.hilt:hilt-compiler:$hilt_androidx_version"
+
+    implementation "androidx.fragment:fragment:$fragment_version"
+    implementation "androidx.fragment:fragment-ktx:$fragment_version"
 
     // Lifecycle - ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
@@ -101,11 +100,6 @@ dependencies {
 
     // Work Manager
     implementation "androidx.work:work-runtime-ktx:$work_version"
-
-    // Kodein
-    implementation "org.kodein.di:kodein-di-generic-jvm:$kodein_version"
-    implementation "org.kodein.di:kodein-di-framework-android-core:$kodein_version"
-    implementation "org.kodein.di:kodein-di-framework-android-x:$kodein_version"
 
     // retrofit2
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"

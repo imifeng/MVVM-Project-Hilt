@@ -13,27 +13,21 @@ import com.android.mvvm.service.SharedPrefService
 import com.jaeger.library.StatusBarUtil
 import com.android.mvvm.core.model.ActivityProperties
 import com.android.mvvm.service.NetworkMonitor
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.layout_header.*
-import org.kodein.di.Kodein
-import org.kodein.di.KodeinAware
-import org.kodein.di.android.kodein
-import org.kodein.di.generic.instance
+import javax.inject.Inject
 
 /**
  * @author Finn
- * @date 2020
+ * @date 2021
  */
-abstract class BaseActivity : AppCompatActivity(), KodeinAware {
+@AndroidEntryPoint
+abstract class BaseActivity : AppCompatActivity() {
 
     abstract val activityProperties: ActivityProperties
 
-    /**
-     * @suppress
-     */
-    override val kodein: Kodein by kodein()
-
-    protected val sp: SharedPrefService by instance()
-    protected val networkMonitor: NetworkMonitor by instance()
+    @Inject lateinit var sp: SharedPrefService
+    @Inject lateinit var networkMonitor: NetworkMonitor
 
     /**
      * The logging tag to be used when debugging. Will use the inheritors simple name.

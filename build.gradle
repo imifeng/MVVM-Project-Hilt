@@ -2,11 +2,25 @@
 buildscript {
     def automatedVerCode = Integer.valueOf(project.findProperty('buildNumber') ?: 1)
     ext {
-        kotlin_version = "1.4.10"
         minAndroidSdk = 21
         targetSdk = 29
         verCode = automatedVerCode
         verName = "1.0.0-${project.findProperty('buildNumber') ?: 0}"
+
+        // version
+        kotlin_version = "1.4.10"
+        hilt_version = '2.33-beta'
+        hilt_androidx_version = '1.0.0-alpha03'
+//        hilt_androidx_version = '1.0.0-beta01'
+        lifecycle_version = "2.2.0"
+        room_version = "2.2.6"
+        work_version = "2.4.0"
+        retrofit_version = "2.9.0"
+        moshi_version = "1.11.0"
+        fragment_version = "1.2.5"
+        statusbarutil_version = '1.5.1'
+        glide_version = '4.11.0'
+        transformations_version = '4.0.0'
     }
 
     repositories {
@@ -16,6 +30,7 @@ buildscript {
     dependencies {
         classpath "com.android.tools.build:gradle:4.0.1"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files

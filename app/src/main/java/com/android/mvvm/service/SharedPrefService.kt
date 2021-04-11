@@ -1,15 +1,18 @@
 package com.android.mvvm.service
 
 import android.annotation.SuppressLint
-import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Build
 import android.util.Base64
 import androidx.core.content.edit
 import com.android.mvvm.BuildConfig
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class SharedPrefService(app: Application) {
+@Singleton
+class SharedPrefService @Inject constructor(@ApplicationContext app: Context) {
 
     companion object {
         private const val TAG = "SharedPrefService"

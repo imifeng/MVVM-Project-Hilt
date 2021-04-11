@@ -1,9 +1,7 @@
 package com.android.mvvm.util
 
 import android.content.Context
-import android.graphics.PorterDuff
 import android.widget.ImageView
-import com.android.mvvm.App
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException

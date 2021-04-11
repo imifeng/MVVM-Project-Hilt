@@ -3,8 +3,9 @@ package com.android.mvvm.web.interceptor
 import com.android.mvvm.service.SharedPrefService
 import okhttp3.Interceptor
 import okhttp3.Response
+import javax.inject.Inject
 
-class HeadInterceptor(val sp: SharedPrefService) : Interceptor {
+class HeadInterceptor @Inject constructor(val sp: SharedPrefService) : Interceptor {
 
     companion object{
         const val HEADER_TOKEN = "Authorization"

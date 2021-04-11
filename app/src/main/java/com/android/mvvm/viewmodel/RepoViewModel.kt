@@ -5,9 +5,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.android.mvvm.data.RepoBean
 import com.android.mvvm.repository.RepoRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class RepoViewModel(
-        private val repoRepository: RepoRepository,
+@HiltViewModel
+class RepoViewModel @Inject constructor(
+    private val repoRepository: RepoRepository,
 ) : ViewModel() {
 
     companion object {

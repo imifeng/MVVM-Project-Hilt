@@ -1,6 +1,6 @@
 ext {
-    StoreFile = "netspeed.keystore"
+    StoreFile = "test.keystore"
     StorePassword = "202121"
-    KeyAlias = "speed"
-    KeyPassword = "202121"
+    KeyAlias = "test"
+    KeyPassword = "202121"testtestsss
 }

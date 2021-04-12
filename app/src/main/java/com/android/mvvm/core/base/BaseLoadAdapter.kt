@@ -98,7 +98,7 @@ open class BaseLoadAdapter : RecyclerView.Adapter<BaseViewHolder>() {
             TAG,
             "notifyItemRangeInserted: start: ${recyclerData.size - data.size}, data.size: ${data.size}"
         )
-        notifyItemRangeInserted(recyclerData.size - data.size , data.size)
+        notifyItemRangeInserted(recyclerData.size - data.size, data.size)
         loadMoreComplete()
     }
 
@@ -140,22 +140,32 @@ open class BaseLoadAdapter : RecyclerView.Adapter<BaseViewHolder>() {
         }
     }
 
-    private fun createConstructorByClass(
-        z: Class<*>,
+    private fun <T> createConstructorByClass(
+        clz: Class<T>,
         view: View
     ): BaseViewHolder {
-        val constructor: Constructor<*>
-        // inner and unstatic class
-        return if (z.isMemberClass && !Modifier.isStatic(z.modifiers)) {
-            constructor = z.getDeclaredConstructor(javaClass, View::class.java)
-            constructor.isAccessible = true
-            constructor.newInstance(this, view) as BaseViewHolder
-        } else {
-            constructor = z.getDeclaredConstructor(View::class.java)
-            constructor.isAccessible = true
-            constructor.newInstance(view) as BaseViewHolder
+        val create = clz.getDeclaredConstructor(View::class.java).apply {
+            isAccessible = true
         }
+        return create.newInstance(view) as BaseViewHolder
     }
+
+//    private fun createConstructorByClass(
+//        z: Class<*>,
+//        view: View
+//    ): BaseViewHolder {
+//        val constructor: Constructor<*>
+//        // inner and unstatic class
+//        return if (z.isMemberClass && !Modifier.isStatic(z.modifiers)) {
+//            constructor = z.getDeclaredConstructor(javaClass, View::class.java)
+//            constructor.isAccessible = true
+//            constructor.newInstance(this, view) as BaseViewHolder
+//        } else {
+//            constructor = z.getDeclaredConstructor(View::class.java)
+//            constructor.isAccessible = true
+//            constructor.newInstance(view) as BaseViewHolder
+//        }
+//    }
 
     private fun getLoadMoreViewCount(): Int {
         if (onLoadMore == null || !loadMoreEnable) {

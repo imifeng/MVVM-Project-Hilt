@@ -39,9 +39,7 @@ class FirstFragment : BaseFragment() {
     private fun signIn() {
         lifecycleScope.launch(Dispatchers.Main) {
             pb_loading.show()
-            val results =
-                withContext(Dispatchers.IO) { repoViewModel.loadRepos(et_username.text.toString()) }
-//            val results = repoViewModel.loadRepos(et_username.text.toString())
+            val results = repoViewModel.loadRepos(et_username.text.toString())
             pb_loading.hide()
             if (results != null && results.isNotEmpty()) {
                 (activity as? MainActivity)?.gotoSecondFragment()

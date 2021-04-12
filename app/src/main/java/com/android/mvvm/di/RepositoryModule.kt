@@ -10,9 +10,9 @@ import javax.inject.Singleton
 
 
 /**
- * TasksRepository binding to use in tests.
+ * RepoRepository binding to use in tests.
  *
- * Hilt will inject a [FakeRepository] instead of a [DefaultTasksRepository].
+ * Hilt will inject a [RepoRepositoryImpl] instead of a [RepoRepository].
  */
 @Module
 @InstallIn(SingletonComponent::class)

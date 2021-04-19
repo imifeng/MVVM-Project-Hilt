@@ -21,7 +21,6 @@ abstract class BaseFragment : Fragment() {
     abstract val fragmentProperties: FragmentProperties
 
     @Inject lateinit var sp: SharedPrefService
-//    protected val sp: SharedPrefService by instance()
 
     /**
      * The logging tag to be used when debugging. Will use the inheritors simple name.

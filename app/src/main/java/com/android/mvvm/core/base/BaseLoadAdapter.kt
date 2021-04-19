@@ -7,8 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.android.mvvm.R
 import com.android.mvvm.core.extension.inflate
 import com.android.mvvm.util.Logger
-import java.lang.reflect.Constructor
-import java.lang.reflect.Modifier
 
 open class BaseLoadAdapter : RecyclerView.Adapter<BaseViewHolder>() {
 

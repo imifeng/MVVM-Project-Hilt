@@ -11,7 +11,6 @@ object Constant {
 
     const val ALPHA_NUM_REGEX_PATTERN = "^[a-zA-Z0-9]+$"
 
-//    val navigationBarActivityList = mutableListOf<String>(
     val NAVIGATION_BAR_ACTIVITY_LIST = mutableListOf<String>(
 //        WelcomeActivity::class.java.simpleName
     )

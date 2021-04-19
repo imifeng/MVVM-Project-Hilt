@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
-import androidx.lifecycle.observe
 import com.android.mvvm.R
 import com.android.mvvm.core.base.BaseActivity
 import com.android.mvvm.core.constant.NetworkStatus

@@ -5,9 +5,10 @@ import android.os.Bundle
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import com.android.mvvm.R
-import com.android.mvvm.core.base.BaseActivity
+import com.android.mvvm.core.base.BaseFeatureActivity
 import com.android.mvvm.core.constant.NetworkStatus
 import com.android.mvvm.core.model.ActivityProperties
+import com.android.mvvm.core.model.BaseProperties
 import com.android.mvvm.core.view.TabItem
 import com.android.mvvm.core.view.toTab
 import com.android.mvvm.ui.test.FirstFragment
@@ -16,8 +17,9 @@ import com.android.mvvm.ui.test.TestFragment
 import com.android.mvvm.util.Logger
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : BaseActivity() {
-    override val activityProperties: ActivityProperties = ActivityProperties(layoutResID = R.layout.activity_main)
+class MainActivity : BaseFeatureActivity() {
+    override val activityProperties: ActivityProperties = ActivityProperties(resource = R.layout.activity_main,
+    hasHeader = false)
 
     private var firstFragment: FirstFragment? = null
     private var secondFragment: SecondFragment? = null
@@ -29,8 +31,7 @@ class MainActivity : BaseActivity() {
     private var currentNetStatus: NetworkStatus? = null
 
 
-    override fun init() {
-        super.init()
+    override fun initLayout() {
         Logger.d(TAG, "init")
         networkMonitor.networkStatus.observe(this, Observer{
             if (it == NetworkStatus.Connected && currentNetStatus != it) {

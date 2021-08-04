@@ -5,6 +5,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.mvvm.R
+import com.android.mvvm.core.base.BaseFeatureFragment
 import com.android.mvvm.core.base.BaseFragment
 import com.android.mvvm.core.model.FragmentProperties
 import com.android.mvvm.ui.test.adapter.ReposAdapter
@@ -14,13 +15,14 @@ import kotlinx.android.synthetic.main.fragment_second.*
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
-class SecondFragment : BaseFragment() {
+class SecondFragment : BaseFeatureFragment() {
     override val fragmentProperties = FragmentProperties(
         resource = R.layout.fragment_second,
-        showHeader = true,
-        showAction = false,
-        actionDrawableRes = R.drawable.ic_clear,
-        title = R.string.repos_title
+        hasHeader = true,
+        hasBack = false,
+        hasAction = false,
+//        actionResource = R.drawable.ic_clear,
+        headerTitle = R.string.repos_title
     )
 
     private val repoViewModel: RepoViewModel by viewModels()
@@ -28,9 +30,7 @@ class SecondFragment : BaseFragment() {
     private val reposAdapter by lazy { ReposAdapter() }
 
 
-    override fun init() {
-        super.init()
-
+    override fun initLayout() {
         rv_data.layoutManager = LinearLayoutManager(requireContext())
         rv_data.adapter = reposAdapter
 

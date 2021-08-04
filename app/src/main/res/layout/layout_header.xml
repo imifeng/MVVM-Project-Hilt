@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/header"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    tools:background="@color/colorBackground">
+    android:layout_height="wrap_content">
 
     <View
         android:id="@+id/view_status_bar"
@@ -22,17 +21,17 @@
         tools:ignore="MissingConstraints">
 
         <ImageView
-            android:id="@+id/header_image_back"
+            android:id="@+id/header_back"
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
             android:scaleType="center"
             android:src="@drawable/ic_back"
             android:visibility="gone"
-            tools:visibility="visible"
-            android:background="?android:attr/selectableItemBackgroundBorderless"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible" />
 
         <ImageView
             android:id="@+id/header_title_logo"
@@ -47,29 +46,15 @@
 
         <TextView
             android:id="@+id/header_title"
+            style="@style/WhiteBold16"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/WhiteBold16"
-            android:textColor="#D9D9D9"
             android:text="@string/app_name"
+            android:textColor="#D9D9D9"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/header_image_action"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginEnd="5dp"
-            android:scaleType="center"
-            android:visibility="gone"
-            tools:visibility="visible"
-            android:background="?android:attr/selectableItemBackgroundBorderless"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/ic_clear" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

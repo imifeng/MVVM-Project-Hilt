@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.android.mvvm.R
-import com.android.mvvm.core.base.BaseFragment
+import com.android.mvvm.core.base.BaseFeatureFragment
 import com.android.mvvm.core.extension.hide
 import com.android.mvvm.core.extension.show
 import com.android.mvvm.core.model.FragmentProperties
@@ -18,9 +18,10 @@ import kotlinx.coroutines.withContext
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
-class FirstFragment : BaseFragment() {
+class FirstFragment : BaseFeatureFragment() {
     override val fragmentProperties = FragmentProperties(
-        resource = R.layout.fragment_first
+        resource = R.layout.fragment_first,
+        hasHeader = false
     )
 
     /**
@@ -28,8 +29,7 @@ class FirstFragment : BaseFragment() {
      */
     private val repoViewModel: RepoViewModel by viewModels()
 
-    override fun init() {
-        super.init()
+    override fun initLayout() {
         // 这里需要访问视图模型，使其在主线程上初始化
         repoViewModel
 

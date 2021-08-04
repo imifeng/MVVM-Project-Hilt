@@ -1,5 +1,6 @@
 package com.android.mvvm.core.base
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -41,6 +42,11 @@ abstract class BaseFragment : Fragment() {
         Logger.d(TAG, "OnViewCreated")
         initHeaderView()
         init()
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        Logger.d(TAG, "onAttach")
     }
 
     /**

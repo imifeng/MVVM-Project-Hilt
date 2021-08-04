@@ -1,6 +1,5 @@
 package com.android.mvvm.viewmodel
 
-import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.android.mvvm.data.RepoBean
@@ -17,7 +16,6 @@ class RepoViewModel @Inject constructor(
         private const val TAG = "RepoViewModel"
     }
 
-    @WorkerThread
     suspend fun loadRepos(username: String): List<RepoBean>? {
         return repoRepository.loadRepos(username)
     }

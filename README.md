@@ -7,7 +7,7 @@ Hilt + ViewBinding + ViewModel + LiveData  + Room + Work (MVVM)
 * 使用[ Hilt ](https://developer.android.com/training/dependency-injection/hilt-android)实现依赖项注入
 
 * 通过视图绑定[ ViewBinding ](https://developer.android.com/topic/libraries/view-binding) 功能，您可以更轻松地编写可与视图交互的代码。在模块中启用视图绑定之后，系统会为该模块中的每个 XML 布局文件生成一个绑定类。绑定类的实例包含对在相应布局中具有 ID 的所有视图的直接引用。
-  备注：Kotlin Android Extensions 已弃用，这意味着不再支持使用 Kotlin 合成进行视图绑定。
+（备注：Kotlin Android Extensions 已弃用，这意味着不再支持使用 Kotlin 合成进行视图绑定。）
 
 * [ViewModel ](https://developer.android.com/topic/libraries/architecture/viewmodel) 架构组件为界面控制器提供了 ViewModel 辅助程序类，该类负责为界面准备数据。在配置更改期间会自动保留 ViewModel 对象，以便它们存储的数据立即可供下一个 Activity 或 Fragment 实例使用
 

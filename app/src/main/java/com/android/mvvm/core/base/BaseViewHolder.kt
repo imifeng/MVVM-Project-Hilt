@@ -1,9 +1,9 @@
 package com.android.mvvm.core.base
 
-import android.view.View
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewbinding.ViewBinding
 
-abstract class BaseViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+abstract class BaseViewHolder<VB : ViewBinding>(protected val binding: VB) : RecyclerView.ViewHolder(binding.root) {
 
     abstract fun bindData(
         position: Int,

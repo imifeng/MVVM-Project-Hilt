@@ -7,21 +7,25 @@ import androidx.lifecycle.Observer
 import com.android.mvvm.R
 import com.android.mvvm.core.base.BaseActivity
 import com.android.mvvm.core.constant.NetworkStatus
-import com.android.mvvm.core.model.ActivityProperties
+import com.android.mvvm.core.model.BaseProperties
 import com.android.mvvm.core.view.TabItem
 import com.android.mvvm.core.view.toTab
+import com.android.mvvm.databinding.ActivityMainBinding
 import com.android.mvvm.ui.test.FirstFragment
 import com.android.mvvm.ui.test.SecondFragment
 import com.android.mvvm.ui.test.TestFragment
+import com.android.mvvm.ui.test.ThirdFragment
 import com.android.mvvm.util.Logger
-import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity() {
-    override val activityProperties: ActivityProperties = ActivityProperties(layoutResID = R.layout.activity_main)
+    override val baseProperties: BaseProperties =
+        BaseProperties(layoutResource = R.layout.activity_main)
+
+    private val binding: ActivityMainBinding by lazy { ActivityMainBinding.bind(viewParent) }
 
     private var firstFragment: FirstFragment? = null
     private var secondFragment: SecondFragment? = null
-    private var testFragment1: TestFragment? = null
+    private var thirdFragment: ThirdFragment? = null
     private var testFragment2: TestFragment? = null
     private var testFragment3: TestFragment? = null
 
@@ -32,7 +36,7 @@ class MainActivity : BaseActivity() {
     override fun init() {
         super.init()
         Logger.d(TAG, "init")
-        networkMonitor.networkStatus.observe(this, Observer{
+        networkMonitor.networkStatus.observe(this, Observer {
             if (it == NetworkStatus.Connected && currentNetStatus != it) {
                 Logger.d(TAG, "networkStatus: $it")
                 // 网络已连接
@@ -42,7 +46,7 @@ class MainActivity : BaseActivity() {
 
         switchTabByPosition(TabItem.TAB_TYPE_FIRST)
 
-        tab_layout.onClickTab = {
+        binding.tabLayout.onClickTab = {
             Logger.d(TAG, it.name)
             switchTabByPosition(it)
         }
@@ -63,9 +67,10 @@ class MainActivity : BaseActivity() {
             switchTabByClick(value.toTab())
         }
     }
+
     private fun switchTabByClick(tab: TabItem) {
         currentItem = null
-        tab_layout.clickItem(tab)
+        binding.tabLayout.clickItem(tab)
     }
 
     fun gotoSecondFragment() {
@@ -81,62 +86,62 @@ class MainActivity : BaseActivity() {
         hideFragment(transaction)
         when (tabItem) {
             TabItem.TAB_TYPE_FIRST -> {
-                if (firstFragment != null) {
-                    transaction.show(firstFragment!!)
-                } else {
+                firstFragment?.let {
+                    transaction.show(it)
+                } ?: run {
                     firstFragment = FirstFragment()
                     transaction.add(
-                            R.id.container,
-                            firstFragment!!,
-                            FirstFragment::class.java.simpleName
+                        R.id.container,
+                        firstFragment!!,
+                        FirstFragment::class.java.simpleName
                     )
                 }
             }
             TabItem.TAB_TYPE_SECOND -> {
-                if (secondFragment != null) {
-                    transaction.show(secondFragment!!)
-                } else {
+                secondFragment?.let {
+                    transaction.show(it)
+                } ?: run {
                     secondFragment = SecondFragment()
                     transaction.add(
-                            R.id.container,
-                            secondFragment!!,
-                            SecondFragment::class.java.simpleName
+                        R.id.container,
+                        secondFragment!!,
+                        SecondFragment::class.java.simpleName
                     )
                 }
             }
             TabItem.TAB_TYPE_THIRD -> {
-                if (testFragment1 != null) {
-                    transaction.show(testFragment1!!)
-                } else {
-                    testFragment1 = TestFragment()
+                thirdFragment?.let {
+                    transaction.show(it)
+                } ?: run {
+                    thirdFragment = ThirdFragment()
                     transaction.add(
-                            R.id.container,
-                            testFragment1!!,
-                            TestFragment::class.java.simpleName
+                        R.id.container,
+                        thirdFragment!!,
+                        ThirdFragment::class.java.simpleName
                     )
                 }
             }
             TabItem.TAB_TYPE_FOURTH -> {
-                if (testFragment2 != null) {
-                    transaction.show(testFragment2!!)
-                } else {
+                testFragment2?.let {
+                    transaction.show(it)
+                } ?: run {
                     testFragment2 = TestFragment()
                     transaction.add(
-                            R.id.container,
-                            testFragment2!!,
-                            TestFragment::class.java.simpleName
+                        R.id.container,
+                        testFragment2!!,
+                        TestFragment::class.java.simpleName
                     )
                 }
             }
             TabItem.TAB_TYPE_FIFTH -> {
-                if (testFragment3 != null) {
-                    transaction.show(testFragment3!!)
-                } else {
+                testFragment3?.let {
+                    transaction.show(it)
+                } ?: run {
                     testFragment3 = TestFragment()
                     transaction.add(
-                            R.id.container,
-                            testFragment3!!,
-                            TestFragment::class.java.simpleName
+                        R.id.container,
+                        testFragment3!!,
+                        TestFragment::class.java.simpleName
                     )
                 }
             }
@@ -153,7 +158,7 @@ class MainActivity : BaseActivity() {
         secondFragment?.let {
             transaction.hide(it)
         }
-        testFragment1?.let {
+        thirdFragment?.let {
             transaction.hide(it)
         }
         testFragment2?.let {
@@ -166,7 +171,7 @@ class MainActivity : BaseActivity() {
 
     override fun onBackPressed() {
         if (currentItem != TabItem.TAB_TYPE_FIRST) {
-            tab_layout.clickItem(TabItem.TAB_TYPE_FIRST)
+            binding.tabLayout.clickItem(TabItem.TAB_TYPE_FIRST)
             return
         }
         super.onBackPressed()

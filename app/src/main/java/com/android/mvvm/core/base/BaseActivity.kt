@@ -4,17 +4,22 @@ import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.content.res.Resources
 import android.os.Bundle
+import android.view.View
+import android.view.ViewGroup
+import android.view.ViewStub
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.viewbinding.ViewBinding
 import com.android.mvvm.R
 import com.android.mvvm.core.constant.Constant
 import com.android.mvvm.core.extension.*
 import com.android.mvvm.service.SharedPrefService
 import com.jaeger.library.StatusBarUtil
-import com.android.mvvm.core.model.ActivityProperties
+import com.android.mvvm.core.model.BaseProperties
+import com.android.mvvm.databinding.ActivityBaseBinding
+import com.android.mvvm.databinding.ActivityMainBinding
 import com.android.mvvm.service.NetworkMonitor
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.layout_header.*
 import javax.inject.Inject
 
 /**
@@ -22,9 +27,19 @@ import javax.inject.Inject
  * @date 2021
  */
 @AndroidEntryPoint
-abstract class BaseActivity : AppCompatActivity() {
+abstract class BaseActivity: AppCompatActivity() {
 
-    abstract val activityProperties: ActivityProperties
+    abstract val baseProperties: BaseProperties
+
+    private val viewBinding: ActivityBaseBinding by lazy {
+        ActivityBaseBinding.inflate(layoutInflater)
+    }
+
+//    private val viewBinding by viewBinding(ActivityBaseBinding::inflate)
+
+    internal val viewParent: View by lazy {
+        viewBinding.viewStub.inflate()
+    }
 
     @Inject lateinit var sp: SharedPrefService
     @Inject lateinit var networkMonitor: NetworkMonitor
@@ -33,9 +48,6 @@ abstract class BaseActivity : AppCompatActivity() {
      * The logging tag to be used when debugging. Will use the inheritors simple name.
      */
     val TAG = this::class.java.simpleName
-
-    // 大多用于避免由于使屏幕旋转导致意图被重新执行
-    protected var savedState: Bundle? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,45 +59,47 @@ abstract class BaseActivity : AppCompatActivity() {
             window.navigationBarColor = ContextCompat.getColor(this, R.color.colorWhite)
         }
 
-        savedState = savedInstanceState
-        setContentView(activityProperties.layoutResID)
+        viewBinding.viewStub.layoutResource = baseProperties.layoutResource
+        setContentView(viewBinding.root)
         StatusBarUtil.setTranslucentForImageView(this, 50, null)
         initHeaderView()
 
         init()
-
     }
 
     protected open fun init() {}
 
     private fun initHeaderView() {
-        view_status_bar?.adaptStatusBarHeight()
-        if (activityProperties.showHeader == true) {
-            layout_header?.show()
-            activityProperties.title?.let {
-                header_title.text = getText(it)
-                header_title.show()
-                header_title_logo?.hide()
-            }
-            if (activityProperties.showBack == true) {
-                activityProperties.backDrawableRes?.let {
-                    header_image_back.setImageResource(it)
+        with(viewBinding){
+            viewStatusBar.adaptStatusBarHeight()
+            if (baseProperties.hasHeader == true) {
+                layoutHeader.show()
+                baseProperties.headerTitle?.let {
+                    headerTitle.text = getText(it)
+                    headerTitle.show()
                 }
-                header_image_back.show()
-                header_image_back.setOnSingleClickListener {
-                    onBackPressed()
+                if (baseProperties.hasBack == true) {
+                    baseProperties.backDrawableRes?.let {
+                        headerBack.setImageResource(it)
+                    }
+                    headerBack.show()
+                    headerBack.setOnSingleClickListener {
+                        onHeaderBack()
+                    }
                 }
-            }
-            if (activityProperties.showAction == true) {
-                activityProperties.actionDrawableRes?.let {
-                    header_image_action.setImageResource(it)
-                    header_image_action.show()
+                if (baseProperties.hasAction == true) {
+                    baseProperties.actionDrawableRes?.let {
+                        headerAction.setImageResource(it)
+                        headerAction.show()
+                    }
                 }
+            } else {
+                layoutHeader.hide()
             }
-        } else {
-            layout_header?.hide()
         }
     }
+
+    open fun onHeaderBack() {}
 
     open fun handleBack() = false
 

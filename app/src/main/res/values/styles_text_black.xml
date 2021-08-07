@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--     Black             -->
+    <style name="Black">
+        <item name="android:textColor">@color/colorBlack</item>
+    </style>
+
+    <style name="BlackReg" parent="Black">
+        <item name="android:fontFamily">@font/pingfang_regular</item>
+    </style>
+
+    <style name="BlackBold" parent="Black">
+        <item name="android:fontFamily">@font/pingfang_bold</item>
+    </style>
+
+    <style name="BlackMedium" parent="Black">
+        <item name="android:fontFamily">@font/pingfang_medium</item>
+    </style>
+
+    <style name="BlackLight" parent="Black">
+        <item name="android:fontFamily">@font/pingfang_light</item>
+    </style>
+
+    <style name="BlackReg24" parent="BlackReg">
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="BlackReg20" parent="BlackReg">
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="BlackReg18" parent="BlackReg">
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="BlackReg16" parent="BlackReg">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="BlackReg14" parent="BlackReg">
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="BlackReg12" parent="BlackReg">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="BlackReg10" parent="BlackReg">
+        <item name="android:textSize">10sp</item>
+    </style>
+
+    <style name="BlackBold34" parent="BlackBold">
+        <item name="android:textSize">34sp</item>
+    </style>
+
+    <style name="BlackBold28" parent="BlackBold">
+        <item name="android:textSize">28sp</item>
+    </style>
+
+    <style name="BlackBold24" parent="BlackBold">
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="BlackBold20" parent="BlackBold">
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="BlackBold18" parent="BlackBold">
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="BlackBold16" parent="BlackBold">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="BlackBold14" parent="BlackBold">
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="BlackBold12" parent="BlackBold">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="BlackBold10" parent="BlackBold">
+        <item name="android:textSize">10sp</item>
+    </style>
+
+
+    <style name="BlackMedium24" parent="BlackMedium">
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="BlackMedium18" parent="BlackMedium">
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="BlackMedium16" parent="BlackMedium">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="BlackMedium14" parent="BlackMedium">
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="BlackMedium12" parent="BlackMedium">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+
+    <style name="BlackLight28" parent="BlackLight">
+        <item name="android:textSize">28sp</item>
+    </style>
+
+    <style name="BlackLight20" parent="BlackLight">
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="BlackLight18" parent="BlackLight">
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="BlackLight16" parent="BlackLight">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="BlackLight14" parent="BlackLight">
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="BlackLight12" parent="BlackLight">
+        <item name="android:textSize">12sp</item>
+    </style>
+</resources>

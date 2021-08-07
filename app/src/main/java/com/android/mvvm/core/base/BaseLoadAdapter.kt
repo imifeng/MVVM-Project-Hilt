@@ -1,14 +1,13 @@
 package com.android.mvvm.core.base
 
-import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.RecyclerView
-import com.android.mvvm.R
-import com.android.mvvm.core.extension.inflate
+import androidx.viewbinding.ViewBinding
+import com.android.mvvm.core.extension.viewBinding
+import com.android.mvvm.databinding.ItemLoadingProgressBinding
 import com.android.mvvm.util.Logger
 
-open class BaseLoadAdapter : RecyclerView.Adapter<BaseViewHolder>() {
+open class BaseLoadAdapter<VB : ViewBinding> : RecyclerView.Adapter<BaseViewHolder<VB>>() {
 
     companion object {
         const val TAG = "LoadAdapter"
@@ -38,10 +37,9 @@ open class BaseLoadAdapter : RecyclerView.Adapter<BaseViewHolder>() {
 
     protected fun addItemType(
         type: Int,
-        @LayoutRes layoutResId: Int,
         holderClass: Class<*>
     ) {
-        holderLayouts[type] = HolderType(layoutResId, holderClass)
+        holderLayouts[type] = HolderType(holderClass)
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -60,18 +58,17 @@ open class BaseLoadAdapter : RecyclerView.Adapter<BaseViewHolder>() {
         return super.getItemViewType(position)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<VB> {
         val holderType = holderLayouts[viewType]!!
-        val view = parent.inflate(holderType.layoutId)
-        Logger.d(TAG, "holderType: $holderType view: $view")
-        return createConstructorByClass(holderType.holderClass, view)
+//        val view = parent.inflate(holderType.layoutId)
+        return createConstructorByClass(holderType.holderClass, parent)
     }
 
     override fun getItemCount(): Int {
         return recyclerData.size + getLoadMoreViewCount()
     }
 
-    override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: BaseViewHolder<VB>, position: Int) {
         autoLoadMore(position)
         holder.bindData(position, getItemData(position), onItemClick)
     }
@@ -128,7 +125,7 @@ open class BaseLoadAdapter : RecyclerView.Adapter<BaseViewHolder>() {
 
     private fun addLoadMoreItem() {
         Logger.d(TAG, "addLoadMoreItem")
-        addItemType(TYPE_ITEM_LOAD_MORE, R.layout.item_loading_progress, LoadingHolder::class.java)
+        addItemType(TYPE_ITEM_LOAD_MORE, LoadingHolder::class.java)
     }
 
     private fun loadMoreComplete() {
@@ -140,30 +137,13 @@ open class BaseLoadAdapter : RecyclerView.Adapter<BaseViewHolder>() {
 
     private fun <T> createConstructorByClass(
         clz: Class<T>,
-        view: View
-    ): BaseViewHolder {
-        val create = clz.getDeclaredConstructor(View::class.java).apply {
+        parent: ViewGroup
+    ): BaseViewHolder<VB> {
+        val create = clz.getDeclaredConstructor(ViewGroup::class.java).apply {
             isAccessible = true
         }
-        return create.newInstance(view) as BaseViewHolder
+        return create.newInstance(parent) as BaseViewHolder<VB>
     }
-
-//    private fun createConstructorByClass(
-//        z: Class<*>,
-//        view: View
-//    ): BaseViewHolder {
-//        val constructor: Constructor<*>
-//        // inner and unstatic class
-//        return if (z.isMemberClass && !Modifier.isStatic(z.modifiers)) {
-//            constructor = z.getDeclaredConstructor(javaClass, View::class.java)
-//            constructor.isAccessible = true
-//            constructor.newInstance(this, view) as BaseViewHolder
-//        } else {
-//            constructor = z.getDeclaredConstructor(View::class.java)
-//            constructor.isAccessible = true
-//            constructor.newInstance(view) as BaseViewHolder
-//        }
-//    }
 
     private fun getLoadMoreViewCount(): Int {
         if (onLoadMore == null || !loadMoreEnable) {
@@ -176,19 +156,18 @@ open class BaseLoadAdapter : RecyclerView.Adapter<BaseViewHolder>() {
             0
         } else 1
     }
-}
 
-class LoadingHolder(itemView: View) : BaseViewHolder(itemView) {
-    override fun bindData(
-        position: Int,
-        item: Any?,
-        onItemClick: ((position: Int, action: Any) -> Unit)?
-    ) {
-
+    inner class LoadingHolder(parent: ViewGroup) :
+        BaseViewHolder<ItemLoadingProgressBinding>(parent.viewBinding(ItemLoadingProgressBinding::inflate)) {
+        override fun bindData(
+            position: Int,
+            item: Any?,
+            onItemClick: ((position: Int, action: Any) -> Unit)?
+        ) {
+        }
     }
-}
 
-data class HolderType(
-    @LayoutRes val layoutId: Int,
-    val holderClass: Class<*>
-)
+    data class HolderType(
+        val holderClass: Class<*>
+    )
+}

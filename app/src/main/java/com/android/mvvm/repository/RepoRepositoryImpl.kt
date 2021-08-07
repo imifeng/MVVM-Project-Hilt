@@ -17,6 +17,7 @@ class RepoRepositoryImpl @Inject constructor(
     override suspend fun loadRepos(username: String): List<RepoBean>? {
         try {
             val results = repoApi.getRepos(username)
+            repoDao.deleteAllRepos()
             repoDao.insertAll(results)
             return results
         } catch (e: Exception) {

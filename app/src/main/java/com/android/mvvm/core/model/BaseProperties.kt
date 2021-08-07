@@ -4,12 +4,12 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
 
-data class ActivityProperties(
-    @LayoutRes val layoutResID: Int,
-    val showHeader: Boolean? = false,
-    @StringRes val title: Int? = null,
-    val showBack: Boolean? = false,
+data class BaseProperties(
+    @LayoutRes val layoutResource: Int,
+    val hasHeader: Boolean? = false,
+    @StringRes val headerTitle: Int? = null,
+    val hasBack: Boolean? = false,
     @DrawableRes val backDrawableRes: Int? = null,
-    val showAction: Boolean? = false,
+    val hasAction: Boolean? = false,
     @DrawableRes val actionDrawableRes: Int? = null
 )

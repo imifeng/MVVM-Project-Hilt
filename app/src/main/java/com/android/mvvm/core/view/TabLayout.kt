@@ -7,13 +7,22 @@ import android.widget.FrameLayout
 import com.android.mvvm.R
 import com.android.mvvm.core.extension.getLayoutInflater
 import com.android.mvvm.core.extension.setOnSingleClickListener
+import com.android.mvvm.core.extension.viewBinding
+import com.android.mvvm.databinding.ViewMainTabBinding
 import kotlinx.android.synthetic.main.view_main_tab.view.*
 
 class TabLayout @JvmOverloads constructor(
-        context: Context,
-        attrs: AttributeSet? = null,
-        defStyleAttr: Int = 0
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
+
+    private val binding: ViewMainTabBinding by lazy {
+        this.viewBinding(
+            ViewMainTabBinding::inflate,
+            true
+        )
+    }
 
     private var currentItem = TabItem.TAB_TYPE_FIRST
     private var clickItem = TabItem.TAB_TYPE_FIRST
@@ -24,48 +33,50 @@ class TabLayout @JvmOverloads constructor(
 
     init {
         context.getLayoutInflater().inflate(R.layout.view_main_tab, this, true)
-        //init Text
-        tabItems.add(tv_first)
-        tabItems.add(tv_second)
-        tabItems.add(tv_third)
-        tabItems.add(tv_fourth)
-        tabItems.add(tv_fifth)
+        with(binding) {
+            //init Text
+            tabItems.add(tvFirst)
+            tabItems.add(tvSecond)
+            tabItems.add(tvThird)
+            tabItems.add(tvFourth)
+            tabItems.add(tvFifth)
 
-        clickItem()
+            clickItem()
 
-        layout_first.setOnSingleClickListener {
-            if (currentItem == TabItem.TAB_TYPE_FIRST) {
-                return@setOnSingleClickListener
+            layoutFirst.setOnSingleClickListener {
+                if (currentItem == TabItem.TAB_TYPE_FIRST) {
+                    return@setOnSingleClickListener
+                }
+                clickItem(TabItem.TAB_TYPE_FIRST)
             }
-            clickItem(TabItem.TAB_TYPE_FIRST)
-        }
 
-        layout_second.setOnSingleClickListener {
-            if (currentItem == TabItem.TAB_TYPE_SECOND) {
-                return@setOnSingleClickListener
+            layoutSecond.setOnSingleClickListener {
+                if (currentItem == TabItem.TAB_TYPE_SECOND) {
+                    return@setOnSingleClickListener
+                }
+                clickItem(TabItem.TAB_TYPE_SECOND)
             }
-            clickItem(TabItem.TAB_TYPE_SECOND)
-        }
 
-        layout_third.setOnSingleClickListener {
-            if (currentItem == TabItem.TAB_TYPE_THIRD) {
-                return@setOnSingleClickListener
+            layoutThird.setOnSingleClickListener {
+                if (currentItem == TabItem.TAB_TYPE_THIRD) {
+                    return@setOnSingleClickListener
+                }
+                clickItem(TabItem.TAB_TYPE_THIRD)
             }
-            clickItem(TabItem.TAB_TYPE_THIRD)
-        }
 
-        layout_fourth.setOnSingleClickListener {
-            if (currentItem == TabItem.TAB_TYPE_FOURTH) {
-                return@setOnSingleClickListener
+            layoutFourth.setOnSingleClickListener {
+                if (currentItem == TabItem.TAB_TYPE_FOURTH) {
+                    return@setOnSingleClickListener
+                }
+                clickItem(TabItem.TAB_TYPE_FOURTH)
             }
-            clickItem(TabItem.TAB_TYPE_FOURTH)
-        }
 
-        layout_fifth.setOnSingleClickListener {
-            if (currentItem == TabItem.TAB_TYPE_FIFTH) {
-                return@setOnSingleClickListener
+            layoutFifth.setOnSingleClickListener {
+                if (currentItem == TabItem.TAB_TYPE_FIFTH) {
+                    return@setOnSingleClickListener
+                }
+                clickItem(TabItem.TAB_TYPE_FIFTH)
             }
-            clickItem(TabItem.TAB_TYPE_FIFTH)
         }
     }
 

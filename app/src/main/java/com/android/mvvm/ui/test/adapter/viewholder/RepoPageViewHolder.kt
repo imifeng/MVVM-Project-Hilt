@@ -1,13 +1,15 @@
 package com.android.mvvm.ui.test.adapter.viewholder
 
-import android.view.View
+import android.view.ViewGroup
 import com.android.mvvm.core.base.BaseViewHolder
+import com.android.mvvm.core.extension.viewBinding
 import com.android.mvvm.data.RepoBean
+import com.android.mvvm.databinding.ItemRepoBinding
 import com.android.mvvm.util.Logger
 import com.android.mvvm.util.loadRound
-import kotlinx.android.synthetic.main.item_repo.view.*
 
-class ReposViewHolder(itemView: View) : BaseViewHolder(itemView) {
+class RepoPageViewHolder(parent: ViewGroup) :
+    BaseViewHolder<ItemRepoBinding>(parent.viewBinding(ItemRepoBinding::inflate)) {
 
     companion object {
         private const val TAG = "ReposViewHolder"
@@ -18,14 +20,14 @@ class ReposViewHolder(itemView: View) : BaseViewHolder(itemView) {
         item: Any?,
         onItemClick: ((position: Int, action: Any) -> Unit)?
     ) {
-        with(itemView) {
+        with(binding) {
             if (item != null && item is RepoBean) {
-                iv_avatar.loadRound(item.owner?.avatar_url)
-                tv_name.text = item.name
-                tv_description.text = item.description ?: ""
+                ivAvatar.loadRound(item.owner?.avatar_url)
+                tvName.text = item.name
+                tvDescription.text = item.description ?: ""
 
                 // 为ViewHolder的视图定义点击监听器
-                setOnClickListener {
+                root.setOnClickListener {
                     Logger.d(TAG, "Element $adapterPosition clicked.")
                     onItemClick?.invoke(position, item)
                 }

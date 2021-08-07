@@ -6,7 +6,9 @@
     android:layout_height="match_parent"
     tools:context=".ui.test.FirstFragment">
 
-    <include layout="@layout/layout_header" />
+    <include
+        android:id="@+id/include_header"
+        layout="@layout/fragment_header" />
 
     <TextView
         android:id="@+id/textview_first"
@@ -29,7 +31,6 @@
         android:paddingLeft="10dp"
         android:singleLine="true"
         android:textColor="@color/colorMain"
-        android:textColorHint="@color/colorLabel"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -52,8 +53,8 @@
         android:layout_centerInParent="true"
         android:layout_marginBottom="8dp"
         android:visibility="gone"
-        tools:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/button_sign"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        tools:visibility="visible" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -15,7 +15,7 @@ Hilt + ViewBinding + ViewModel + LiveData  + Room + Work (MVVM)
 
 * 使用[ Room ](https://developer.android.com/training/data-storage/room)将数据保存到本地数据库
 
-* 暂未添加 [ Work Manager ](https://developer.android.com/topic/libraries/architecture/workmanager)调度任务；WorkManager 是一个 API，可供您轻松调度那些即使在退出应用或重启设备后仍应运行的可靠异步任务。WorkManager API 是一个适合用来替换所有先前的 Android 后台调度 API（包括 FirebaseJobDispatcher、GcmNetworkManager 和 JobScheduler）的组件
+* [ Work Manager ](https://developer.android.com/topic/libraries/architecture/workmanager)调度任务；WorkManager 是一个 API，可供您轻松调度那些即使在退出应用或重启设备后仍应运行的可靠异步任务。WorkManager API 是一个适合用来替换所有先前的 Android 后台调度 API（包括 FirebaseJobDispatcher、GcmNetworkManager 和 JobScheduler）的组件。（暂未加入示例代码）
 
 * [Retrofit 2](https://square.github.io/retrofit) 适用于 Android 和 Java 的类型安全 HTTP 客户端
 

@@ -5,7 +5,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.android.mvvm.core.extension.viewBinding
 import com.android.mvvm.databinding.ItemLoadingProgressBinding
-import com.android.mvvm.util.Logger
 
 open class BaseLoadAdapter<VB : ViewBinding> : RecyclerView.Adapter<BaseViewHolder<VB>>() {
 
@@ -20,7 +19,7 @@ open class BaseLoadAdapter<VB : ViewBinding> : RecyclerView.Adapter<BaseViewHold
 
     private var recyclerView: RecyclerView? = null
     private val holderLayouts = hashMapOf<Int, HolderType>()
-    protected var recyclerData: ArrayList<Any> = arrayListOf()
+    private val recyclerData: MutableList<Any> = mutableListOf()
 
     private var loading = false
     private var loadMoreEnable = false
@@ -60,7 +59,6 @@ open class BaseLoadAdapter<VB : ViewBinding> : RecyclerView.Adapter<BaseViewHold
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<VB> {
         val holderType = holderLayouts[viewType]!!
-//        val view = parent.inflate(holderType.layoutId)
         return createConstructorByClass(holderType.holderClass, parent)
     }
 
@@ -89,10 +87,6 @@ open class BaseLoadAdapter<VB : ViewBinding> : RecyclerView.Adapter<BaseViewHold
 
     fun addRecyclerData(data: List<Any>) {
         recyclerData.addAll(data)
-        Logger.d(
-            TAG,
-            "notifyItemRangeInserted: start: ${recyclerData.size - data.size}, data.size: ${data.size}"
-        )
         notifyItemRangeInserted(recyclerData.size - data.size, data.size)
         loadMoreComplete()
     }
@@ -104,7 +98,7 @@ open class BaseLoadAdapter<VB : ViewBinding> : RecyclerView.Adapter<BaseViewHold
         if (getLoadMoreViewCount() == 0) {
             return
         }
-        //Load "startLoadMoreIndex" positions in advance
+        // 提前加载“startLoadMoreIndex”位置
         if (position < itemCount - getLoadMoreViewCount() - startLoadMoreIndex) {
             return
         }
@@ -119,12 +113,10 @@ open class BaseLoadAdapter<VB : ViewBinding> : RecyclerView.Adapter<BaseViewHold
     }
 
     fun setLoadMoreEnable(isLoadMore: Boolean) {
-        Logger.d(TAG, "isLoadMore: $isLoadMore")
         loadMoreEnable = isLoadMore
     }
 
     private fun addLoadMoreItem() {
-        Logger.d(TAG, "addLoadMoreItem")
         addItemType(TYPE_ITEM_LOAD_MORE, LoadingHolder::class.java)
     }
 

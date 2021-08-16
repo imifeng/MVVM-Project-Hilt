@@ -4,12 +4,9 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
-import com.android.mvvm.R
-import com.android.mvvm.core.extension.getLayoutInflater
 import com.android.mvvm.core.extension.setOnSingleClickListener
 import com.android.mvvm.core.extension.viewBinding
 import com.android.mvvm.databinding.ViewMainTabBinding
-import kotlinx.android.synthetic.main.view_main_tab.view.*
 
 class TabLayout @JvmOverloads constructor(
     context: Context,
@@ -18,7 +15,7 @@ class TabLayout @JvmOverloads constructor(
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
     private val binding: ViewMainTabBinding by lazy {
-        this.viewBinding(
+        viewBinding(
             ViewMainTabBinding::inflate,
             true
         )
@@ -32,7 +29,6 @@ class TabLayout @JvmOverloads constructor(
     private val tabItems by lazy { mutableListOf<View>() }
 
     init {
-        context.getLayoutInflater().inflate(R.layout.view_main_tab, this, true)
         with(binding) {
             //init Text
             tabItems.add(tvFirst)

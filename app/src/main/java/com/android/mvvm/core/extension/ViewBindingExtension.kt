@@ -30,7 +30,7 @@ fun <T : ViewBinding> Fragment.viewBinding(factory: (View) -> T): ReadOnlyProper
 
         override fun getValue(thisRef: Fragment, property: KProperty<*>): T =
             binding ?: factory(requireView()).also {
-                // if binding is accessed after Lifecycle is DESTROYED, create new instance, but don't cache it
+                // 如果在 Lifecycle 被销毁后访问绑定，则创建新实例，但不要缓存它
                 if (viewLifecycleOwner.lifecycle.currentState.isAtLeast(Lifecycle.State.INITIALIZED)) {
                     viewLifecycleOwner.lifecycle.addObserver(this)
                     binding = it
@@ -54,15 +54,13 @@ inline fun <T : ViewBinding> DialogFragment.viewBinding(crossinline factory: (La
 /**
  * 不是真正的委托，只是 RecyclerView.ViewHolders 的一个小帮手
  */
+inline fun <T : ViewBinding> ViewGroup.viewBinding(factory: (LayoutInflater, ViewGroup, Boolean) -> T) =
+    factory(LayoutInflater.from(context), this, false)
+
+/**
+ * 不是真正的委托，只是 CustomView 的一个小帮手
+ */
 inline fun <T : ViewBinding> ViewGroup.viewBinding(
     factory: (LayoutInflater, ViewGroup, Boolean) -> T,
     attachToRoot: Boolean = false
 ) = factory(LayoutInflater.from(context), this, attachToRoot)
-
-///**
-// * 不是真正的委托，只是 RecyclerView.ViewHolders 的一个小帮手
-// */
-//inline fun <T : ViewBinding> View.viewBinding(
-//    attachToRoot: Boolean = false,
-//    factory: (LayoutInflater, ViewGroup, Boolean) -> T
-//) = factory(LayoutInflater.from(context), this as ViewGroup, attachToRoot)

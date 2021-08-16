@@ -1,8 +1,7 @@
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
-apply plugin: 'kotlin-kapt'
-apply plugin: 'dagger.hilt.android.plugin'
+apply plugin: "com.android.application"
+apply plugin: "kotlin-android"
+apply plugin: "kotlin-kapt"
+apply plugin: "dagger.hilt.android.plugin"
 
 android {
     compileSdkVersion 29
@@ -29,50 +28,72 @@ android {
     }
 
     buildTypes {
+        all {
+            buildConfigField("String", "API_URL", "\"https://api.github.com/\"")
+        }
         debug {
             minifyEnabled false
-            testCoverageEnabled project.hasProperty('coverage')
+            testCoverageEnabled project.hasProperty("coverage")
             debuggable true
             applicationIdSuffix ".dev"
             versionNameSuffix "-DEV"
             signingConfig signingConfigs.debug
-
-            buildConfigField("String", "API_URL", "\"https://api.github.com/\"")
         }
 
         release {
             minifyEnabled false
             shrinkResources false
             debuggable false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             signingConfig signingConfigs.release
-
-            buildConfigField("String", "API_URL", "\"https://api.github.com/\"")
         }
     }
+
+    //自定义打包时apk名称
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->// each 改为 all
+            def date = new Date().format("ddHHmm", TimeZone.getTimeZone("GMT+08"))
+            def fileName = "MVVM_${productFlavors[0].name}_${versionName}_${versionCode}_${date}.apk"
+            def outFile = output.outputFile
+            if (outFile != null && outFile.name.endsWith(".apk")) {
+                outputFileName = fileName // output.outputFile 改为 outputFileName
+            }
+        }
+    }
+
+    //多渠道打包
+    flavorDimensions "code"
+    productFlavors {
+        google {
+        }
+    }
+    productFlavors.all {
+        flavor -> flavor.manifestPlaceholders = [CHANNEL_VALUE: name]
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = "1.8"
     }
 
-    viewBinding {
-        enabled = true
+    buildFeatures {
+        viewBinding = true
     }
 }
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.core:core-ktx:1.3.2'
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'com.google.android.material:material:1.1.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    implementation "androidx.core:core-ktx:1.3.2"
+    implementation "androidx.appcompat:appcompat:1.2.0"
+    implementation "com.google.android.material:material:1.1.0"
+    implementation "androidx.constraintlayout:constraintlayout:2.0.4"
+    testImplementation "junit:junit:4.12"
+    androidTestImplementation "androidx.test.ext:junit:1.1.2"
+    androidTestImplementation "androidx.test.espresso:espresso-core:3.3.0"
 
     // hilt
     implementation "com.google.dagger:hilt-android:$hilt_version"

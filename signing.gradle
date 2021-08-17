@@ -1,6 +1,0 @@
-ext {
-    StoreFile = "test.keystore"
-    StorePassword = "202121"
-    KeyAlias = "test"
-    KeyPassword = "202121"
-}

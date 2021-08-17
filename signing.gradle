@@ -1,6 +1,6 @@
 ext {
     StoreFile = "test.keystore"
-    StorePassword = "202121"
+    StorePassword = "123456"
     KeyAlias = "test"
-    KeyPassword = "202121"
+    KeyPassword = "123456"
 }

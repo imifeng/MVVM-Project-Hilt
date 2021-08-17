@@ -9,10 +9,10 @@ android {
 
     signingConfigs {
         release {
-//            keyAlias KeyAlias
-//            keyPassword KeyPassword
-//            storeFile file(StoreFile)
-//            storePassword StorePassword
+            keyAlias KeyAlias
+            keyPassword KeyPassword
+            storeFile file(StoreFile)
+            storePassword StorePassword
             v1SigningEnabled true
             v2SigningEnabled true
         }
@@ -65,6 +65,10 @@ android {
     flavorDimensions "code"
     productFlavors {
         google {
+        }
+        baidu {
+        }
+        tenxun {
         }
     }
     productFlavors.all {

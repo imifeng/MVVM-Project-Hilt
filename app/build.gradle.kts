@@ -19,6 +19,13 @@ android {
             isV1SigningEnabled = true
             isV2SigningEnabled = true
         }
+
+        getByName("debug") {
+            storeFile = File(Signing.StoreFile)
+            storePassword = Signing.StorePassword
+            keyAlias = Signing.KeyAlias
+            keyPassword = Signing.KeyPassword
+        }
     }
 
     defaultConfig {
@@ -37,6 +44,7 @@ android {
             isDebuggable = true
             applicationIdSuffix = ".dev"
             versionNameSuffix = "-DEV"
+            signingConfig = signingConfigs.getByName("debug")
 
             buildConfigField("String", "API_URL", "\"https://api.github.com/\"")
         }

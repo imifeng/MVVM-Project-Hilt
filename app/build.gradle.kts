@@ -5,12 +5,22 @@ plugins {
     id("dagger.hilt.android.plugin")
 }
 
+private object BuildTypes {
+    const val DEBUG = "debug"
+    const val RELEASE = "release"
+    const val DEV = "dev"
+}
+
+private object FlavorDimensions {
+    const val DEFAULT = "default"
+}
+
 android {
-    compileSdkVersion(29)
-    buildToolsVersion = "30.0.2"
+    compileSdkVersion(Versions.compileSdkVersion)
+    buildToolsVersion = Versions.buildToolsVersion
 
     signingConfigs {
-        create("release") {
+        create(BuildTypes.RELEASE) {
             storeFile = File(Signing.StoreFile)
             storePassword = Signing.StorePassword
             keyAlias = Signing.KeyAlias
@@ -18,13 +28,6 @@ android {
 
             isV1SigningEnabled = true
             isV2SigningEnabled = true
-        }
-
-        getByName("debug") {
-            storeFile = File(Signing.StoreFile)
-            storePassword = Signing.StorePassword
-            keyAlias = Signing.KeyAlias
-            keyPassword = Signing.KeyPassword
         }
     }
 
@@ -35,28 +38,25 @@ android {
         versionCode = Versions.verCode
         versionName = Versions.verName
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        // create buildConfigField
+        buildConfigField("String", "API_URL", "\"https://api.github.com/\"")
     }
 
     buildTypes {
-        getByName("debug") {
+        getByName(BuildTypes.DEBUG) {
             isMinifyEnabled = false
-            isTestCoverageEnabled = project.hasProperty("coverage")
             isDebuggable = true
-            applicationIdSuffix = ".dev"
-            versionNameSuffix = "-DEV"
-            signingConfig = signingConfigs.getByName("debug")
-
-            buildConfigField("String", "API_URL", "\"https://api.github.com/\"")
+//            applicationIdSuffix = ".${BuildTypes.DEV}"
+            versionNameSuffix = "-${BuildTypes.DEV.toUpperCase()}"
         }
 
-        getByName("release") {
+        getByName(BuildTypes.RELEASE) {
             isMinifyEnabled = false
             isShrinkResources = false
             isDebuggable = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            signingConfig = signingConfigs.getByName("release")
-
-            buildConfigField("String", "API_URL", "\"https://api.github.com/\"")
+            signingConfig = signingConfigs.getByName(BuildTypes.RELEASE)
         }
     }
 
@@ -65,7 +65,7 @@ android {
         val buildType = buildType.name
         outputs.all {
             if (this is com.android.build.gradle.internal.api.ApkVariantOutputImpl) {
-                if (buildType == "release") {
+                if (buildType == BuildTypes.RELEASE) {
                     outputFileName = "MVVM_v${versionCode}_${flavorName}_${Versions.dateFormat}.apk"
                 }
             }
@@ -73,12 +73,12 @@ android {
     }
 
     //多渠道打包
-    flavorDimensions("code")
+    flavorDimensions(FlavorDimensions.DEFAULT)
     productFlavors {
         create("google")
         create("baidu")
         create("huawei")
-        create("default")
+        create("other")
     }
     productFlavors.all {
         manifestPlaceholders["CHANNEL_VALUE"] = name

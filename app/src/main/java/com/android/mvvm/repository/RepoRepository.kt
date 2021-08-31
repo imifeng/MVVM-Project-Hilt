@@ -5,7 +5,7 @@ import com.android.mvvm.data.RepoBean
 
 interface RepoRepository {
 
-    suspend fun loadRepos(username: String): List<RepoBean>?
+    suspend fun loadRepos(username: String): LiveData<List<RepoBean>>?
 
     fun getRepos(): LiveData<List<RepoBean>>
 }

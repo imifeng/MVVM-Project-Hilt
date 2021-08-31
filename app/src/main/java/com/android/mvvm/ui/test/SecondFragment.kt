@@ -2,6 +2,7 @@ package com.android.mvvm.ui.test
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.mvvm.R
 import com.android.mvvm.core.base.BaseFragment
@@ -24,14 +25,12 @@ class SecondFragment : BaseFragment(R.layout.fragment_second) {
 
     override fun init() {
         super.init()
-        repoViewModel
         initHeaderView()
 
         with(binding.rvData) {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = reposAdapter
         }
-
 
         initData()
     }
@@ -48,7 +47,7 @@ class SecondFragment : BaseFragment(R.layout.fragment_second) {
 
     private fun initData() {
         repoViewModel.getRepos().observe(viewLifecycleOwner, {
-            if (it != null) {
+            if (it.isNotEmpty()) {
                 reposAdapter.setData(it)
             }
         })

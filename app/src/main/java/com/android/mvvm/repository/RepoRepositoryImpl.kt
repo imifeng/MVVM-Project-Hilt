@@ -2,6 +2,8 @@ package com.android.mvvm.repository
 
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.liveData
 import com.android.mvvm.core.extension.tryCatchException
 import com.android.mvvm.data.RepoBean
 import com.android.mvvm.data.dao.RepoBeanDao
@@ -14,12 +16,12 @@ class RepoRepositoryImpl @Inject constructor(
 ) : RepoRepository {
 
     @WorkerThread
-    override suspend fun loadRepos(username: String): List<RepoBean>? {
+    override suspend fun loadRepos(username: String): LiveData<List<RepoBean>>? {
         try {
-            val results = repoApi.getRepos(username)
-            repoDao.deleteAllRepos()
-            repoDao.insertAll(results)
-            return results
+            return liveData {
+                val results = repoApi.getRepos(username)
+                emit(results)
+            }
         } catch (e: Exception) {
             e.tryCatchException()
         }

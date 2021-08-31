@@ -35,8 +35,6 @@ abstract class BaseActivity: AppCompatActivity() {
         ActivityBaseBinding.inflate(layoutInflater)
     }
 
-//    private val viewBinding by viewBinding(ActivityBaseBinding::inflate)
-
     internal val viewParent: View by lazy {
         viewBinding.viewStub.inflate()
     }

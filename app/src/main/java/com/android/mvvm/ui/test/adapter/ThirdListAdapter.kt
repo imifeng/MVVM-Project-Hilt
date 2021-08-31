@@ -16,7 +16,7 @@ class ThirdListAdapter : RecyclerView.Adapter<ThirdListViewHolder>(), RecyclerVi
 
     // 使用 Diff Util 来刷新列表数据
     var datas: List<String> by Delegates.observable(emptyList()) {
-            property, oldValue, newValue ->
+            _, oldValue, newValue ->
         notifyDataDispatchUpdate(oldValue, newValue) { old, new -> old == new }
     }
 

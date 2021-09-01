@@ -1,6 +1,5 @@
 package com.android.mvvm.data.dao
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.android.mvvm.data.RepoBean
 
@@ -8,24 +7,24 @@ import com.android.mvvm.data.RepoBean
 interface RepoBeanDao {
 
     @Insert
-    fun insert(repo: RepoBean)
+    suspend fun insert(repo: RepoBean)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(repos: List<RepoBean>)
 
     @Update
-    fun update(repo: RepoBean)
+    suspend fun update(repo: RepoBean)
 
     @Delete
-    fun delete(repo: RepoBean)
+    suspend fun delete(repo: RepoBean)
 
     @Query("DELETE FROM repo_table")
-    fun deleteAllRepos()
+    suspend fun deleteAllRepos()
 
     @Query("SELECT * FROM repo_table ORDER BY id DESC")
-    fun getAllRepos(): LiveData<List<RepoBean>>
+    suspend fun getAllRepos(): List<RepoBean>
 
     @Query("SELECT * FROM repo_table WHERE id = :id")
-    fun getReposById(id: Int): LiveData<List<RepoBean>>
+    suspend fun getReposById(id: Int): List<RepoBean>
 
 }

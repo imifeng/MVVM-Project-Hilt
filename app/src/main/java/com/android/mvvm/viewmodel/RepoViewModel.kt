@@ -1,19 +1,16 @@
 package com.android.mvvm.viewmodel
 
-import androidx.arch.core.util.Function
 import androidx.lifecycle.*
 import com.android.mvvm.data.RepoBean
 import com.android.mvvm.repository.RepoRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
-import androidx.lifecycle.Transformations
 
 import androidx.lifecycle.LiveData
-
-
+import com.android.mvvm.core.model.DataState
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 
 @HiltViewModel
@@ -25,21 +22,28 @@ class RepoViewModel @Inject constructor(
         private const val TAG = "RepoViewModel"
     }
 
-    // Create a LiveData with a String
-    val loadRepoLiveData: MutableLiveData<List<RepoBean>> by lazy {
-        MutableLiveData<List<RepoBean>>().apply { value = emptyList() }
-    }
+    private val _loadRepoDataState: MutableLiveData<DataState<List<RepoBean>>> by lazy { MutableLiveData() }
+    val loadRepoDataState: LiveData<DataState<List<RepoBean>>>
+        get() = _loadRepoDataState
 
-    fun loadRepos(username: String){
-        viewModelScope.launch(Dispatchers.Main) {
-            val result = withContext(Dispatchers.IO) { repoRepository.loadRepos(username) }
-            result?.let {
-                loadRepoLiveData.postValue(it.value)
-            }
+    fun loadRepos(username: String) {
+        viewModelScope.launch {
+            repoRepository.loadRepos(username).onEach { dataState ->
+                _loadRepoDataState.value = dataState
+            }.launchIn(viewModelScope)
         }
     }
 
-    fun getRepos(): LiveData<List<RepoBean>> {
-        return Transformations.distinctUntilChanged(repoRepository.getRepos())
+
+    private val _getReposDataState: MutableLiveData<DataState<List<RepoBean>>> by lazy { MutableLiveData() }
+    val getReposDataState: LiveData<DataState<List<RepoBean>>>
+        get() = _getReposDataState
+
+    fun getRepos() {
+        viewModelScope.launch {
+            repoRepository.getRepos().onEach { dataState ->
+                _getReposDataState.value = dataState
+            }.launchIn(viewModelScope)
+        }
     }
 }

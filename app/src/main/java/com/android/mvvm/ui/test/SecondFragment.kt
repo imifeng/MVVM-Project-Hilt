@@ -73,6 +73,13 @@ class SecondFragment : BaseFragment(R.layout.fragment_second) {
         }
     }
 
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        if (!hidden){
+            initData()
+        }
+    }
+
     private fun initData() {
         repoViewModel.getRepos()
     }

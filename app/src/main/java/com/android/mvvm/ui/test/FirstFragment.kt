@@ -43,6 +43,8 @@ class FirstFragment : BaseFragment(R.layout.fragment_first) {
                     val data = dataState.data
                     if (data.isNotEmpty()) {
                         (activity as? MainActivity)?.gotoSecondFragment()
+                    }else{
+                        context?.makeShortToast("该用户数据为空")
                     }
                 }
                 is DataState.Failure -> {

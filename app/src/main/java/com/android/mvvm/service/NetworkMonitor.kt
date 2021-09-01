@@ -15,6 +15,7 @@ import com.android.mvvm.util.Logger
 import com.android.mvvm.core.constant.NetworkStatus
 import com.android.mvvm.core.extension.getMainThread
 import com.android.mvvm.di.WebModule
+import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -24,7 +25,10 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class NetworkMonitor @Inject constructor(@ApplicationContext private val context: Context) {
+class NetworkMonitor @Inject constructor(
+    @ApplicationContext private val context: Context,
+    @WebModule.QuickOkHttpClient private val quickHttpClient: OkHttpClient
+    ) {
     companion object {
         private const val TAG = "NetworkMonitor"
     }
@@ -40,9 +44,6 @@ class NetworkMonitor @Inject constructor(@ApplicationContext private val context
     private val HOLDTIME = 1000 * 5
 
 
-    @WebModule.QuickOkHttpClient
-    @Inject
-    lateinit var quickHttpClient: OkHttpClient
     val networkStatus = MutableLiveData<NetworkStatus>(NetworkStatus.Disconnected)
     val isWifi = MutableLiveData(false)
     val wifiInfo = MutableLiveData<WifiInfo>(null)
@@ -56,7 +57,7 @@ class NetworkMonitor @Inject constructor(@ApplicationContext private val context
     init {
         context.getMainThread {
             isWifi.observeForever {
-                Logger.d(TAG, "isWifi=" + it)
+                Logger.d(TAG, "isWifi=$it")
                 if (it && networkStatus.value != NetworkStatus.Disconnected) {
                     val wm = context.getSystemService(Context.WIFI_SERVICE) as WifiManager
                     wifiInfo.postValue(wm.connectionInfo)

@@ -1,11 +1,12 @@
 package com.android.mvvm.repository
 
-import androidx.annotation.WorkerThread
-import androidx.lifecycle.LiveData
 import com.android.mvvm.core.extension.tryCatchException
+import com.android.mvvm.core.model.DataState
 import com.android.mvvm.data.RepoBean
 import com.android.mvvm.data.dao.RepoBeanDao
 import com.android.mvvm.web.api.RepoApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class RepoRepositoryImpl @Inject constructor(
@@ -13,21 +14,29 @@ class RepoRepositoryImpl @Inject constructor(
     private val repoDao: RepoBeanDao
 ) : RepoRepository {
 
-    @WorkerThread
-    override suspend fun loadRepos(username: String): List<RepoBean>? {
+    override suspend fun loadRepos(username: String): Flow<DataState<List<RepoBean>>> = flow {
         try {
+            emit(DataState.Loading)
             val results = repoApi.getRepos(username)
             repoDao.deleteAllRepos()
             repoDao.insertAll(results)
-            return results
+            emit(DataState.Success(results))
         } catch (e: Exception) {
             e.tryCatchException()
+            emit(DataState.Error(e))
         }
-        return null
     }
 
-    override fun getRepos(): LiveData<List<RepoBean>> {
-        return repoDao.getAllRepos()
+
+    override suspend fun getRepos(): Flow<DataState<List<RepoBean>>> = flow {
+        try {
+            emit(DataState.Loading)
+            val results = repoDao.getAllRepos()
+            emit(DataState.Success(results))
+        } catch (e: Exception) {
+            e.tryCatchException()
+            emit(DataState.Error(e))
+        }
     }
 
 }

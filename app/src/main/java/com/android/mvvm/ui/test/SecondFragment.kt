@@ -2,10 +2,13 @@ package com.android.mvvm.ui.test
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.mvvm.R
 import com.android.mvvm.core.base.BaseFragment
 import com.android.mvvm.core.extension.*
+import com.android.mvvm.core.model.DataState
+import com.android.mvvm.data.RepoBean
 import com.android.mvvm.databinding.FragmentSecondBinding
 import com.android.mvvm.ui.test.adapter.ReposPageAdapter
 import com.android.mvvm.viewmodel.RepoViewModel
@@ -24,7 +27,6 @@ class SecondFragment : BaseFragment(R.layout.fragment_second) {
 
     override fun init() {
         super.init()
-        repoViewModel
         initHeaderView()
 
         with(binding.rvData) {
@@ -32,6 +34,31 @@ class SecondFragment : BaseFragment(R.layout.fragment_second) {
             adapter = reposAdapter
         }
 
+        repoViewModel.getReposDataState.observe(viewLifecycleOwner, { dataState ->
+            when (dataState) {
+                is DataState.Loading -> {
+                    // 正在加载,可显示加载进度条
+                    binding.pbLoading.show()
+                }
+                is DataState.Success<List<RepoBean>> -> {
+                    binding.pbLoading.hide()
+                    // 加载成功，展示数据
+                    val data = dataState.data
+                    if (data.isNotEmpty()) {
+                        reposAdapter.setData(data)
+                    }
+                }
+                is DataState.Failure -> {
+                    binding.pbLoading.hide()
+                    // 加载失败， 提示错误信息
+                    context?.makeShortToast(dataState.message)
+                }
+                is DataState.Error -> {
+                    binding.pbLoading.hide()
+                    // 加载出错
+                }
+            }
+        })
 
         initData()
     }
@@ -46,11 +73,14 @@ class SecondFragment : BaseFragment(R.layout.fragment_second) {
         }
     }
 
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        if (!hidden){
+            initData()
+        }
+    }
+
     private fun initData() {
-        repoViewModel.getRepos().observe(viewLifecycleOwner, {
-            if (it != null) {
-                reposAdapter.setData(it)
-            }
-        })
+        repoViewModel.getRepos()
     }
 }

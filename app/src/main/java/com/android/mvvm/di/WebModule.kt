@@ -113,7 +113,10 @@ object WebModule {
 
     @Provides
     @Singleton
-    fun provideNetworkMonitor(@ApplicationContext context: Context): NetworkMonitor {
-        return NetworkMonitor(context)
+    fun provideNetworkMonitor(
+        @ApplicationContext context: Context,
+        client: OkHttpClient
+    ): NetworkMonitor {
+        return NetworkMonitor(context, client)
     }
 }

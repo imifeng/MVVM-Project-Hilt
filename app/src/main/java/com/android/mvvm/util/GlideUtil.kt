@@ -12,40 +12,7 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 
-
-fun ImageView.loadRound(url: String?) {
-    if (!url.isNullOrEmpty() && context != null) {
-        val requestOptions =
-            RequestOptions.circleCropTransform()
-        loadImage(context, this, url, requestOptions)
-    }
-}
-
-fun ImageView.loadRect(url: String?) {
-    if (!url.isNullOrEmpty() && context != null) {
-        val requestOptions =
-            RequestOptions.centerCropTransform()
-        loadImage(context, this, url, requestOptions)
-    }
-}
-
-fun ImageView.loadRectFitCenter(url: String?) {
-    if (!url.isNullOrEmpty() && context != null) {
-        val requestOptions =
-            RequestOptions.fitCenterTransform()
-        loadImage(context, this, url, requestOptions)
-    }
-}
-
-fun ImageView.loadRoundCorner(url: String?, roundedCorners: Int) {
-    if (!url.isNullOrEmpty() && context != null) {
-        val requestOptions =
-            RequestOptions().transform(CenterCrop(), RoundedCorners(roundedCorners))
-        loadImage(context, this, url, requestOptions)
-    }
-}
-
-private fun loadImage(
+fun loadImage(
     context: Context,
     view: ImageView,
     url: String?,
@@ -85,4 +52,36 @@ fun loadGif(context: Context, gifView: ImageView, gifDrawable: Int, loopCount: I
 
 fun clearMemory(context: Context) {
     Glide.get(context).clearMemory()
+}
+
+fun ImageView.loadRound(url: String?) {
+    if (!url.isNullOrEmpty() && context != null) {
+        val requestOptions =
+            RequestOptions.circleCropTransform()
+        loadImage(context, this, url, requestOptions)
+    }
+}
+
+fun ImageView.loadRect(url: String?) {
+    if (!url.isNullOrEmpty() && context != null) {
+        val requestOptions =
+            RequestOptions.centerCropTransform()
+        loadImage(context, this, url, requestOptions)
+    }
+}
+
+fun ImageView.loadRectFitCenter(url: String?) {
+    if (!url.isNullOrEmpty() && context != null) {
+        val requestOptions =
+            RequestOptions.fitCenterTransform()
+        loadImage(context, this, url, requestOptions)
+    }
+}
+
+fun ImageView.loadRoundCorner(url: String?, roundedCorners: Int) {
+    if (!url.isNullOrEmpty() && context != null) {
+        val requestOptions =
+            RequestOptions().transform(CenterCrop(), RoundedCorners(roundedCorners))
+        loadImage(context, this, url, requestOptions)
+    }
 }

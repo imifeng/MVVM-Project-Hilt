@@ -2,21 +2,21 @@ package com.android.mvvm.core.extension
 
 import android.app.Activity
 import android.content.Context
+import android.os.Build
 import android.util.DisplayMetrics
 import android.util.TypedValue
+import android.view.WindowInsets
 
 /**
  * @function 获得界面宽
  */
 fun Activity.getPhoneWidth(): Int {
-    val metric = DisplayMetrics()
-    this.windowManager.defaultDisplay.getMetrics(metric)
+    val metric = resources.displayMetrics
     return metric.widthPixels
 }
 
 fun Activity.getPhoneWidthWithDp(): Float {
-    val metric = DisplayMetrics()
-    this.windowManager.defaultDisplay.getMetrics(metric)
+    val metric = resources.displayMetrics
     return (metric.widthPixels / metric.density + 0.5f)
 }
 
@@ -24,14 +24,12 @@ fun Activity.getPhoneWidthWithDp(): Float {
  * @function 获得界面高
  */
 fun Activity.getPhoneHeight(): Int {
-    val metric = DisplayMetrics()
-    this.windowManager.defaultDisplay.getMetrics(metric)
+    val metric = resources.displayMetrics
     return metric.heightPixels
 }
 
 fun Activity.getPhoneHeightWithDp(): Float {
-    val metric = DisplayMetrics()
-    this.windowManager.defaultDisplay.getMetrics(metric)
+    val metric = resources.displayMetrics
     return (metric.heightPixels / metric.density + 0.5f)
 }
 
@@ -42,7 +40,7 @@ fun Context.convertToDp(num: Int): Int {
     return TypedValue.applyDimension(
         TypedValue.COMPLEX_UNIT_DIP,
         num.toFloat(),
-        this.resources.displayMetrics
+        resources.displayMetrics
     ).toInt()
 }
 
@@ -53,6 +51,6 @@ fun Context.convertToSp(num: Int): Int {
     return TypedValue.applyDimension(
         TypedValue.COMPLEX_UNIT_SP,
         num.toFloat(),
-        this.resources.displayMetrics
+        resources.displayMetrics
     ).toInt()
 }

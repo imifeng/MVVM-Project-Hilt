@@ -16,7 +16,7 @@ class BooleanAdapters {
     fun fromJson(reader: JsonReader): Boolean {
         return when(reader.peek()) {
             JsonReader.Token.STRING -> {
-                val bool = reader.nextString().toLowerCase(Locale.getDefault())
+                val bool = reader.nextString().lowercase(Locale.getDefault())
                 return bool == "true"
             }
             JsonReader.Token.BOOLEAN -> reader.nextBoolean()

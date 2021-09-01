@@ -25,14 +25,10 @@ class SharedPrefService @Inject constructor(@ApplicationContext app: Context) {
         private const val USER_TOKEN = "$SP_PREFIX.USER_TOKEN"
     }
 
-    private val sp: SharedPreferences
-
-    init {
-        sp = app.getSharedPreferences(
-            SHARED_PREF,
-            Context.MODE_PRIVATE
-        )
-    }
+    private val sp: SharedPreferences = app.getSharedPreferences(
+        SHARED_PREF,
+        Context.MODE_PRIVATE
+    )
 
     val version: Int = BuildConfig.VERSION_CODE
     val versionName: String = BuildConfig.VERSION_NAME

@@ -82,7 +82,7 @@ abstract class BaseActivity: AppCompatActivity() {
                     }
                     headerBack.show()
                     headerBack.setOnSingleClickListener {
-                        onHeaderBack()
+                        onHeaderBackClick(it)
                     }
                 }
                 if (baseProperties.hasAction == true) {
@@ -97,7 +97,7 @@ abstract class BaseActivity: AppCompatActivity() {
         }
     }
 
-    open fun onHeaderBack() {}
+    open fun onHeaderBackClick(view: View) {}
 
     open fun handleBack() = false
 

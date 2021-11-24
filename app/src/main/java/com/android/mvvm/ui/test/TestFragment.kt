@@ -9,7 +9,7 @@ import com.android.mvvm.core.extension.viewBinding
 import com.android.mvvm.databinding.FragmentTestBinding
 
 /**
- * A simple [Fragment] subclass as the second destination in the navigation.
+ * A simple [Fragment]
  */
 class TestFragment : BaseFragment(R.layout.fragment_test) {
 

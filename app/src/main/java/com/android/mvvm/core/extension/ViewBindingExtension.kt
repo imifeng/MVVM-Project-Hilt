@@ -37,6 +37,11 @@ fun <T : ViewBinding> Fragment.viewBinding(factory: (View) -> T): ReadOnlyProper
                 }
             }
 
+        override fun onStop(owner: LifecycleOwner) {
+            super.onStop(owner)
+
+        }
+
         override fun onDestroy(owner: LifecycleOwner) {
             binding = null
         }

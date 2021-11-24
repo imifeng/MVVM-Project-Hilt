@@ -1,4 +1,4 @@
-package com.android.mvvm.core.base
+package com.android.mvvm.core.base.adapter
 
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView

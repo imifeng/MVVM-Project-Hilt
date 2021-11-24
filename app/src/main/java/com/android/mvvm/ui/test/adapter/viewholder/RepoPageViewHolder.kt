@@ -1,7 +1,7 @@
 package com.android.mvvm.ui.test.adapter.viewholder
 
 import android.view.ViewGroup
-import com.android.mvvm.core.base.BaseViewHolder
+import com.android.mvvm.core.base.adapter.BaseViewHolder
 import com.android.mvvm.core.extension.viewBinding
 import com.android.mvvm.data.RepoBean
 import com.android.mvvm.databinding.ItemRepoBinding
@@ -9,7 +9,7 @@ import com.android.mvvm.util.Logger
 import com.android.mvvm.util.loadRound
 
 class RepoPageViewHolder(parent: ViewGroup) :
-    BaseViewHolder<ItemRepoBinding>(parent.viewBinding(ItemRepoBinding::inflate)) {
+    BaseViewHolder<ItemRepoBinding, RepoBean>(parent.viewBinding(ItemRepoBinding::inflate)) {
 
     companion object {
         private const val TAG = "ReposViewHolder"
@@ -17,20 +17,30 @@ class RepoPageViewHolder(parent: ViewGroup) :
 
     override fun bindData(
         position: Int,
-        item: Any?,
-        onItemClick: ((position: Int, action: Any) -> Unit)?
+        item: RepoBean?,
+        onItemClick: ((position: Int, action: Any) -> Unit)?,
+        vararg params: Any?
     ) {
-        with(binding) {
-            if (item != null && item is RepoBean) {
-                ivAvatar.loadRound(item.owner?.avatar_url)
-                tvName.text = item.name
-                tvDescription.text = item.description ?: ""
+        with(itemView) {
+            if (item != null) {
+                binding.ivAvatar.loadRound(item.owner?.avatar_url)
+                binding.tvName.text = item.name
+                binding.tvDescription.text = item.description ?: ""
+
+                // 示例获取更多参数
+                params.let {
+                    val firstParam = params[0] as Int
+                    val secondParam = params[1] as String
+                    Logger.d(TAG, "params: firstParam = $firstParam, secondParam = $secondParam")
+                }
 
                 // 为ViewHolder的视图定义点击监听器
-                root.setOnClickListener {
+                setOnClickListener {
                     Logger.d(TAG, "Element $adapterPosition clicked.")
                     onItemClick?.invoke(position, item)
                 }
+
+
             }
         }
     }

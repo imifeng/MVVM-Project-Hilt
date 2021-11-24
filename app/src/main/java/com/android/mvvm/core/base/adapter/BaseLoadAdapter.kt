@@ -1,12 +1,10 @@
-package com.android.mvvm.core.base
+package com.android.mvvm.core.base.adapter
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
-import com.android.mvvm.core.extension.viewBinding
-import com.android.mvvm.databinding.ItemLoadingProgressBinding
 
-open class BaseLoadAdapter<VB : ViewBinding> : RecyclerView.Adapter<BaseViewHolder<VB>>() {
+open class BaseLoadAdapter<VB : ViewBinding, T> : RecyclerView.Adapter<BaseViewHolder<VB, T>>() {
 
     companion object {
         const val TAG = "LoadAdapter"
@@ -19,7 +17,7 @@ open class BaseLoadAdapter<VB : ViewBinding> : RecyclerView.Adapter<BaseViewHold
 
     private var recyclerView: RecyclerView? = null
     private val holderLayouts = hashMapOf<Int, HolderType>()
-    private val recyclerData: MutableList<Any> = mutableListOf()
+    private val recyclerData: MutableList<T> = mutableListOf()
 
     private var loading = false
     private var loadMoreEnable = false
@@ -57,7 +55,7 @@ open class BaseLoadAdapter<VB : ViewBinding> : RecyclerView.Adapter<BaseViewHold
         return super.getItemViewType(position)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<VB> {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<VB, T> {
         val holderType = holderLayouts[viewType]!!
         return createConstructorByClass(holderType.holderClass, parent)
     }
@@ -66,12 +64,12 @@ open class BaseLoadAdapter<VB : ViewBinding> : RecyclerView.Adapter<BaseViewHold
         return recyclerData.size + getLoadMoreViewCount()
     }
 
-    override fun onBindViewHolder(holder: BaseViewHolder<VB>, position: Int) {
+    override fun onBindViewHolder(holder: BaseViewHolder<VB, T>, position: Int) {
+        holder.bindData(position, getItemData(position), onItemClick, position, "test")
         autoLoadMore(position)
-        holder.bindData(position, getItemData(position), onItemClick)
     }
 
-    private fun getItemData(position: Int): Any? {
+    private fun getItemData(position: Int): T? {
         return if (position == recyclerData.size && getLoadMoreViewCount() == 1) {
             null
         } else {
@@ -79,13 +77,13 @@ open class BaseLoadAdapter<VB : ViewBinding> : RecyclerView.Adapter<BaseViewHold
         }
     }
 
-    fun setRecyclerData(data: List<Any>) {
+    fun setRecyclerData(data: List<T>) {
         recyclerData.clear()
         recyclerData.addAll(data)
         notifyDataSetChanged()
     }
 
-    fun addRecyclerData(data: List<Any>) {
+    fun addRecyclerData(data: List<T>) {
         recyclerData.addAll(data)
         notifyItemRangeInserted(recyclerData.size - data.size, data.size)
         loadMoreComplete()
@@ -127,14 +125,14 @@ open class BaseLoadAdapter<VB : ViewBinding> : RecyclerView.Adapter<BaseViewHold
         }
     }
 
-    private fun <T> createConstructorByClass(
-        clz: Class<T>,
+    private fun <C> createConstructorByClass(
+        clz: Class<C>,
         parent: ViewGroup
-    ): BaseViewHolder<VB> {
+    ): BaseViewHolder<VB, T> {
         val create = clz.getDeclaredConstructor(ViewGroup::class.java).apply {
             isAccessible = true
         }
-        return create.newInstance(parent) as BaseViewHolder<VB>
+        return create.newInstance(parent) as BaseViewHolder<VB, T>
     }
 
     private fun getLoadMoreViewCount(): Int {
@@ -147,16 +145,6 @@ open class BaseLoadAdapter<VB : ViewBinding> : RecyclerView.Adapter<BaseViewHold
         return if (recyclerData.isEmpty()) {
             0
         } else 1
-    }
-
-    inner class LoadingHolder(parent: ViewGroup) :
-        BaseViewHolder<ItemLoadingProgressBinding>(parent.viewBinding(ItemLoadingProgressBinding::inflate)) {
-        override fun bindData(
-            position: Int,
-            item: Any?,
-            onItemClick: ((position: Int, action: Any) -> Unit)?
-        ) {
-        }
     }
 
     data class HolderType(

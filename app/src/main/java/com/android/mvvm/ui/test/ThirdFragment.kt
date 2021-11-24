@@ -12,7 +12,7 @@ import com.android.mvvm.databinding.FragmentThirdBinding
 import com.android.mvvm.ui.test.adapter.ThirdListAdapter
 
 /**
- * A simple [Fragment] subclass as the second destination in the navigation.
+ * A simple [Fragment]
  */
 class ThirdFragment : BaseFragment(R.layout.fragment_third) {
 

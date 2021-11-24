@@ -1,15 +1,11 @@
 package com.android.mvvm.ui.test.adapter
 
-import com.android.mvvm.core.base.BaseLoadAdapter
+import com.android.mvvm.core.base.adapter.BaseLoadAdapter
 import com.android.mvvm.data.RepoBean
 import com.android.mvvm.databinding.ItemRepoBinding
 import com.android.mvvm.ui.test.adapter.viewholder.RepoPageViewHolder
 
-class ReposPageAdapter : BaseLoadAdapter<ItemRepoBinding>() {
-
-    companion object {
-        private const val TAG = "ReposAdapter"
-    }
+class ReposPageAdapter : BaseLoadAdapter<ItemRepoBinding, RepoBean>() {
 
     init {
         addItemType(TYPE_ITEM, RepoPageViewHolder::class.java)

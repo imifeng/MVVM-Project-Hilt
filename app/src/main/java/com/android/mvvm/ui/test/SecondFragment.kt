@@ -2,19 +2,20 @@ package com.android.mvvm.ui.test
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.mvvm.R
 import com.android.mvvm.core.base.BaseFragment
+import com.android.mvvm.core.base.ErrorState
+import com.android.mvvm.core.base.FailureState
+import com.android.mvvm.core.base.LoadingState
 import com.android.mvvm.core.extension.*
-import com.android.mvvm.core.model.DataState
-import com.android.mvvm.data.RepoBean
 import com.android.mvvm.databinding.FragmentSecondBinding
 import com.android.mvvm.ui.test.adapter.ReposPageAdapter
 import com.android.mvvm.viewmodel.RepoViewModel
+import com.android.mvvm.viewmodel.RepoViewModel.RepoState.RepoDataState
 
 /**
- * A simple [Fragment] subclass as the second destination in the navigation.
+ * A simple [Fragment]
  */
 class SecondFragment : BaseFragment(R.layout.fragment_second) {
 
@@ -34,26 +35,26 @@ class SecondFragment : BaseFragment(R.layout.fragment_second) {
             adapter = reposAdapter
         }
 
-        repoViewModel.getReposDataState.observe(viewLifecycleOwner, { dataState ->
-            when (dataState) {
-                is DataState.Loading -> {
+        repoViewModel.state.observe(viewLifecycleOwner, { state ->
+            when (state) {
+                is LoadingState -> {
                     // 正在加载,可显示加载进度条
                     binding.pbLoading.show()
                 }
-                is DataState.Success<List<RepoBean>> -> {
+                is RepoDataState -> {
                     binding.pbLoading.hide()
                     // 加载成功，展示数据
-                    val data = dataState.data
+                    val data = state.data
                     if (data.isNotEmpty()) {
                         reposAdapter.setData(data)
                     }
                 }
-                is DataState.Failure -> {
+                is FailureState -> {
                     binding.pbLoading.hide()
                     // 加载失败， 提示错误信息
-                    context?.makeShortToast(dataState.message)
+                    context?.makeShortToast(state.message)
                 }
-                is DataState.Error -> {
+                is ErrorState -> {
                     binding.pbLoading.hide()
                     // 加载出错
                 }

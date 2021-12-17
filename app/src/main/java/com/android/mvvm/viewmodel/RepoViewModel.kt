@@ -27,19 +27,17 @@ class RepoViewModel @Inject constructor(
     }
 
     fun loadRepos(username: String) {
-        viewModelScope.launch {
-            repoRepository.loadRepos(username).onEach { dataState ->
-                setState(dataState)
-            }.launchIn(viewModelScope)
-        }
+//        viewModelScope.launch {
+        repoRepository.loadRepos(username).onEach { dataState ->
+            setState(dataState)
+        }.launchIn(viewModelScope)
+//        }
     }
 
 
     fun getRepos() {
-        viewModelScope.launch {
-            repoRepository.getRepos().onEach { dataState ->
-                setState(dataState)
-            }.launchIn(viewModelScope)
-        }
+        repoRepository.getRepos().onEach { dataState ->
+            setState(dataState)
+        }.launchIn(viewModelScope)
     }
 }

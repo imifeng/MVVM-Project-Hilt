@@ -9,16 +9,18 @@ import com.android.mvvm.data.dao.RepoBeanDao
 import com.android.mvvm.viewmodel.RepoViewModel.RepoState.CheckSuccess
 import com.android.mvvm.viewmodel.RepoViewModel.RepoState.RepoDataState
 import com.android.mvvm.web.api.RepoApi
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 interface RepoRepository {
 
-    suspend fun loadRepos(username: String): Flow<State>
+    fun loadRepos(username: String): Flow<State>
 
-    suspend fun getRepos(): Flow<State>
+    fun getRepos(): Flow<State>
 }
 
 class RepoRepositoryImpl @Inject constructor(
@@ -26,7 +28,7 @@ class RepoRepositoryImpl @Inject constructor(
     private val repoDao: RepoBeanDao
 ) : RepoRepository {
 
-    override suspend fun loadRepos(username: String): Flow<State> = flow {
+    override fun loadRepos(username: String): Flow<State> = flow {
         emit(LoadingState)
         val results = repoApi.getRepos(username)
         if(results.isNotEmpty()){
@@ -38,15 +40,15 @@ class RepoRepositoryImpl @Inject constructor(
         }
     }.catch { e ->
         emit(ErrorState(e))
-    }
+    }.flowOn(Dispatchers.IO)
 
 
-    override suspend fun getRepos(): Flow<State> = flow {
+    override fun getRepos(): Flow<State> = flow {
         emit(LoadingState)
         val results = repoDao.getAllRepos()
         emit(RepoDataState(results))
     }.catch { e ->
         emit(ErrorState(e))
-    }
+    }.flowOn(Dispatchers.IO)
 
 }

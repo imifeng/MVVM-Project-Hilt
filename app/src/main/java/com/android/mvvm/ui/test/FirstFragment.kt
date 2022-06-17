@@ -3,10 +3,7 @@ package com.android.mvvm.ui.test
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.android.mvvm.R
-import com.android.mvvm.core.base.BaseFragment
-import com.android.mvvm.core.base.ErrorState
-import com.android.mvvm.core.base.FailureState
-import com.android.mvvm.core.base.LoadingState
+import com.android.mvvm.core.base.*
 import com.android.mvvm.core.extension.hide
 import com.android.mvvm.core.extension.makeShortToast
 import com.android.mvvm.core.extension.show
@@ -33,7 +30,7 @@ class FirstFragment : BaseFragment(R.layout.fragment_first) {
         super.init()
         initHeaderView()
 
-        repoViewModel.state.observe(viewLifecycleOwner, { state ->
+        repoViewModel.dataState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is LoadingState -> {
                     // 正在加载,可显示加载进度条
@@ -46,10 +43,10 @@ class FirstFragment : BaseFragment(R.layout.fragment_first) {
                         (activity as? MainActivity)?.gotoSecondFragment()
                     }
                 }
-                is FailureState -> {
+                is ServerErrorState -> {
                     binding.pbLoading.hide()
                     // 加载失败， 提示错误信息
-                    context?.makeShortToast(state.message)
+                    state.message?.let { context?.makeShortToast(it) }
                 }
                 is ErrorState -> {
                     binding.pbLoading.hide()
@@ -57,7 +54,7 @@ class FirstFragment : BaseFragment(R.layout.fragment_first) {
 
                 }
             }
-        })
+        }
 
 
         binding.buttonSign.setOnClickListener {

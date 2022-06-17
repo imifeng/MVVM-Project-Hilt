@@ -1,6 +1,7 @@
 package com.android.mvvm.web.api
 
 import com.android.mvvm.data.RepoBean
+import com.android.mvvm.web.BasicResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 
@@ -11,8 +12,8 @@ interface RepoApi {
      * 网络请求标记: @FormUrlEncoded、@Multipart、@Streaming
      * 网络请求参数: @Header &、@Headers、 @Body、@Field 、 @FieldMap、@Part 、 @PartMap、@Query、@QueryMap、@Path、@Url
      */
-    @GET("users/{user}/repos")
-    suspend fun getRepos(@Path("user") user: String): List<RepoBean>
+    @GET("*/users/{user}/repos")
+    suspend fun getRepos(@Path("user") user: String): BasicResponse<List<RepoBean>>
 
     // 以下示例文件流的获取
     //    @GET

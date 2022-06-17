@@ -4,22 +4,18 @@ import androidx.lifecycle.*
 import com.android.mvvm.data.RepoBean
 import com.android.mvvm.repository.RepoRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import javax.inject.Inject
-
-import androidx.lifecycle.LiveData
 import com.android.mvvm.core.base.BaseViewModel
-import com.android.mvvm.core.base.State
+import com.android.mvvm.core.base.DataState
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-
 
 @HiltViewModel
 class RepoViewModel @Inject constructor(
     private val repoRepository: RepoRepository,
 ) : BaseViewModel() {
 
-    sealed class RepoState : State {
+    sealed class RepoState : DataState {
 
         data class CheckSuccess(val checkLogin: Boolean) : RepoState()
 
@@ -27,17 +23,15 @@ class RepoViewModel @Inject constructor(
     }
 
     fun loadRepos(username: String) {
-//        viewModelScope.launch {
         repoRepository.loadRepos(username).onEach { dataState ->
-            setState(dataState)
+            setDataState(dataState)
         }.launchIn(viewModelScope)
-//        }
     }
 
 
     fun getRepos() {
         repoRepository.getRepos().onEach { dataState ->
-            setState(dataState)
+            setDataState(dataState)
         }.launchIn(viewModelScope)
     }
 }

@@ -8,32 +8,42 @@ import androidx.lifecycle.distinctUntilChanged
 /**
  * 使用 State 接口和状态成员变量对 View 进行 UI 更改
  */
-interface State
+interface DataState
 
-data class FailureState(val code: Int, val message: String) : State
-data class ErrorState(val cause: Throwable) : State
-object LoadingState : State
+object LoginState : DataState
+
+object LoadingState : DataState
+
+/**
+ * The result of a non 2xx response to a network request.
+ */
+data class ServerErrorState(val code: Int, val message: String? = null) : DataState
+
+/**
+ * The result of a network connectivity error, or for example, json parsing error
+ */
+data class ErrorState(val message: String? = null) : DataState
 
 /**
  * 例如，用于在导航后重置视图模型的状态
  */
-object Reset : State
+object Reset : DataState
 
 
 abstract class BaseViewModel : ViewModel() {
     /**
      * 建议观察状态 LiveData 并在 UI 上进行更改
      */
-    private val _state = MutableLiveData<State>()
-    val state: LiveData<State>
-        get() = _state.distinctUntilChanged()
+    private val _dataState = MutableLiveData<DataState>()
+    val dataState: LiveData<DataState>
+        get() = _dataState.distinctUntilChanged()
 
-    protected fun setState(state: State) {
-        _state.postValue(state)
+    protected fun setDataState(state: DataState) {
+        _dataState.value = state
     }
 
     fun resetState() {
-        _state.postValue(Reset)
+        _dataState.value = Reset
     }
 
     override fun onCleared() {

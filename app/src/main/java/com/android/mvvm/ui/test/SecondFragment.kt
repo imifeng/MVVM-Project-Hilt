@@ -4,10 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.mvvm.R
-import com.android.mvvm.core.base.BaseFragment
-import com.android.mvvm.core.base.ErrorState
-import com.android.mvvm.core.base.FailureState
-import com.android.mvvm.core.base.LoadingState
+import com.android.mvvm.core.base.*
 import com.android.mvvm.core.extension.*
 import com.android.mvvm.databinding.FragmentSecondBinding
 import com.android.mvvm.ui.test.adapter.ReposPageAdapter
@@ -35,7 +32,7 @@ class SecondFragment : BaseFragment(R.layout.fragment_second) {
             adapter = reposAdapter
         }
 
-        repoViewModel.state.observe(viewLifecycleOwner, { state ->
+        repoViewModel.dataState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is LoadingState -> {
                     // 正在加载,可显示加载进度条
@@ -49,17 +46,19 @@ class SecondFragment : BaseFragment(R.layout.fragment_second) {
                         reposAdapter.setData(data)
                     }
                 }
-                is FailureState -> {
+                is ServerErrorState -> {
                     binding.pbLoading.hide()
                     // 加载失败， 提示错误信息
-                    context?.makeShortToast(state.message)
+                    state.message?.let {
+                        context?.makeShortToast(it)
+                    }
                 }
                 is ErrorState -> {
                     binding.pbLoading.hide()
                     // 加载出错
                 }
             }
-        })
+        }
 
         initData()
     }

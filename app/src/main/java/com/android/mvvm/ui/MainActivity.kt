@@ -3,7 +3,6 @@ package com.android.mvvm.ui
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.FragmentTransaction
-import androidx.lifecycle.Observer
 import com.android.mvvm.R
 import com.android.mvvm.core.base.BaseActivity
 import com.android.mvvm.core.constant.NetworkStatus
@@ -11,15 +10,22 @@ import com.android.mvvm.core.model.BaseProperties
 import com.android.mvvm.core.view.TabItem
 import com.android.mvvm.core.view.toTab
 import com.android.mvvm.databinding.ActivityMainBinding
+import com.android.mvvm.service.NetworkMonitor
 import com.android.mvvm.ui.test.FirstFragment
 import com.android.mvvm.ui.test.SecondFragment
 import com.android.mvvm.ui.test.TestFragment
 import com.android.mvvm.ui.test.ThirdFragment
 import com.android.mvvm.util.Logger
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : BaseActivity() {
     override val baseProperties: BaseProperties =
         BaseProperties(layoutResource = R.layout.activity_main)
+
+    @Inject
+    lateinit var networkMonitor: NetworkMonitor
 
     private val binding: ActivityMainBinding by lazy { ActivityMainBinding.bind(viewParent) }
 
@@ -36,13 +42,13 @@ class MainActivity : BaseActivity() {
     override fun init() {
         super.init()
         Logger.d(TAG, "init")
-        networkMonitor.networkStatus.observe(this, Observer {
+        networkMonitor.networkStatus.observe(this) {
             if (it == NetworkStatus.Connected && currentNetStatus != it) {
                 Logger.d(TAG, "networkStatus: $it")
                 // 网络已连接
             }
             currentNetStatus = it
-        })
+        }
 
         switchTabByPosition(TabItem.TAB_TYPE_FIRST)
 

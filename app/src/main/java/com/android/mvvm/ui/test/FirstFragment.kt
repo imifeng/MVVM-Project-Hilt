@@ -12,10 +12,12 @@ import com.android.mvvm.databinding.FragmentFirstBinding
 import com.android.mvvm.ui.MainActivity
 import com.android.mvvm.viewmodel.RepoViewModel
 import com.android.mvvm.viewmodel.RepoViewModel.RepoState.CheckSuccess
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * A simple [Fragment]
  */
+@AndroidEntryPoint
 class FirstFragment : BaseFragment(R.layout.fragment_first) {
 
     private val binding by viewBinding(FragmentFirstBinding::bind)

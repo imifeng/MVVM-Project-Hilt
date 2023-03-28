@@ -5,29 +5,21 @@ import android.content.res.Configuration
 import android.content.res.Resources
 import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup
-import android.view.ViewStub
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.viewbinding.ViewBinding
 import com.android.mvvm.R
 import com.android.mvvm.core.constant.Constant
 import com.android.mvvm.core.extension.*
-import com.android.mvvm.service.SharedPrefService
 import com.jaeger.library.StatusBarUtil
 import com.android.mvvm.core.model.BaseProperties
 import com.android.mvvm.databinding.ActivityBaseBinding
-import com.android.mvvm.databinding.ActivityMainBinding
-import com.android.mvvm.service.NetworkMonitor
-import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 /**
  * @author Finn
  * @date 2021
  */
-@AndroidEntryPoint
-abstract class BaseActivity: AppCompatActivity() {
+
+abstract class BaseActivity : AppCompatActivity() {
 
     abstract val baseProperties: BaseProperties
 
@@ -39,18 +31,17 @@ abstract class BaseActivity: AppCompatActivity() {
         viewBinding.viewStub.inflate()
     }
 
-    @Inject lateinit var sp: SharedPrefService
-    @Inject lateinit var networkMonitor: NetworkMonitor
-
-    /**
-     * The logging tag to be used when debugging. Will use the inheritors simple name.
-     */
-    val TAG = this::class.java.simpleName
+    companion object {
+        /**
+         * The logging tag to be used when debugging. Will use the inheritors simple name.
+         */
+        val TAG: String = this::class.java.simpleName
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (!isPad() && !isActivityTransparent()) {
-            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT // 设置activity始终是竖屏,
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED // 设置activity始终是竖屏,
         }
 
         if (isNavigationBarColorWhite()) {
@@ -68,7 +59,7 @@ abstract class BaseActivity: AppCompatActivity() {
     protected open fun init() {}
 
     private fun initHeaderView() {
-        with(viewBinding){
+        with(viewBinding) {
             viewStatusBar.adaptStatusBarHeight()
             if (baseProperties.hasHeader == true) {
                 layoutHeader.show()
@@ -107,23 +98,14 @@ abstract class BaseActivity: AppCompatActivity() {
         }
     }
 
-    /**
-     * Set font size, language
-     * @return
-     */
-    override fun getResources(): Resources {
-        //Set font size, language
-        return super.getResources()
-    }
-
-    fun isPad(): Boolean {
+    private fun isPad(): Boolean {
         return (resources.configuration.screenLayout and Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE
     }
 
     /**
      * 当前Activity是否需要设置底部虚拟键背景色
      */
-    fun isNavigationBarColorWhite(): Boolean {
+    private fun isNavigationBarColorWhite(): Boolean {
         return Constant.NAVIGATION_BAR_ACTIVITY_LIST.any {
             this::class.java.simpleName == it
         }

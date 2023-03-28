@@ -10,10 +10,12 @@ import com.android.mvvm.databinding.FragmentSecondBinding
 import com.android.mvvm.ui.test.adapter.ReposPageAdapter
 import com.android.mvvm.viewmodel.RepoViewModel
 import com.android.mvvm.viewmodel.RepoViewModel.RepoState.RepoDataState
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * A simple [Fragment]
  */
+@AndroidEntryPoint
 class SecondFragment : BaseFragment(R.layout.fragment_second) {
 
     private val binding by viewBinding(FragmentSecondBinding::bind)

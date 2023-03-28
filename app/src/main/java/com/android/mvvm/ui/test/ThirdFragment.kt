@@ -4,16 +4,16 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.mvvm.R
 import com.android.mvvm.core.base.BaseFragment
-import com.android.mvvm.core.extension.adaptStatusBarHeight
 import com.android.mvvm.core.extension.show
 import com.android.mvvm.core.extension.viewBinding
-import com.android.mvvm.databinding.FragmentTestBinding
 import com.android.mvvm.databinding.FragmentThirdBinding
 import com.android.mvvm.ui.test.adapter.ThirdListAdapter
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * A simple [Fragment]
  */
+@AndroidEntryPoint
 class ThirdFragment : BaseFragment(R.layout.fragment_third) {
 
     private val binding by viewBinding(FragmentThirdBinding::bind)
